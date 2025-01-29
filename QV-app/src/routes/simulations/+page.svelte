@@ -3,24 +3,40 @@
 	<meta name="description" content="Simulations Page For Quantum Vision" />
 </svelte:head>
 
-<div class="text-column">
-	<h1>About this app</h1>
+<script>
+	import oneD from "$lib/images/1d_modal.png";
+	import twoD from "$lib/images/2d_modal.png";
+	import threeD from "$lib/images/3d_modal.png";
+	import fission from "$lib/images/fission_modal.png";
+	import fusion from "$lib/images/fusion_modal.png";
 
-	<p>
-		This is a <a href="https://svelte.dev/docs/kit">SvelteKit</a> app. You can make your own by typing
-		the following into your command line and following the prompts:
-	</p>
+	import { onMount } from 'svelte';
 
-	<pre>npx sv create</pre>
+	let isMobile = false;
 
-	<p>
-		The page you're looking at is purely static HTML, with no client-side interactivity needed.
-		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
-		the devtools network panel and reloading.
-	</p>
+	function checkViewport() {
+		isMobile = window.innerWidth < 768;
+	}
 
-	<p>
-		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
-		using it with JavaScript disabled!
-	</p>
-</div>
+	onMount(() => {
+		checkViewport();
+		window.addEventListener('resize', checkViewport);
+
+		return () => window.removeEventListener('resize', checkViewport);
+	});
+</script>
+
+<section>
+	<!-- 1-3Dimensional Particle in a box modals -->
+	<div class="flex sm:justify-center sm:flex-row sm:items-center space-x-28 xl:space-x-36 pt-12">
+		<img src={oneD} alt="onedimension simulation" class="hover:translate-y-3 hover:scale-105 transform transition duration-500 ease-in-out w-1/4 xl:w-1/3" />
+		<img src={twoD} alt="twodimension simulation" class="hover:translate-y-3 hover:scale-105 transform transition duration-500 ease-in-out w-1/4 xl:w-1/3" />
+		<img src={threeD} alt="threedimension simulation" class="hover:translate-y-3 hover:scale-105 transform transition duration-500 ease-in-out w-1/4 xl:w-1/3" />
+	</div>
+
+	<!-- fission and fusion modals  -->
+	<div class="flex sm:justify-center sm:flex-row sm:items-center space-x-44 pt-24">
+		<img src={fission} alt="fission simulation" class="hover:translate-y-3 hover:scale-105 transform transition duration-500 ease-in-out w-1/4 xl:w-1/3"/>
+		<img src={fusion} alt="fusion simulation" class="hover:translate-y-3 hover:scale-105 transform transition duration-500 ease-in-out w-1/4 xl:w-1/3"/>
+	</div>
+</section>
