@@ -1,6 +1,6 @@
 <svelte:head>
-	<title>About</title>
-	<meta name="description" content="About this app" />
+	<title>Simulations</title>
+	<meta name="description" content="Simulations Page For Quantum Vision" />
 </svelte:head>
 
 <div class="text-column">

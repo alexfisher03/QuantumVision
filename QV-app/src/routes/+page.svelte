@@ -1,59 +1,38 @@
-<script lang="ts">
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcomeFallback from '$lib/images/svelte-welcome.png';
+<script>
+	import arrow from '$lib/vectors/getstartedarrow.svg';
+	import linkedin from '$lib/vectors/linkedin.svg';
+	import avatar from '$lib/vectors/Avatar.svg';
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>Quantum Vision</title>
+	<meta name="description" content="Interactive Modern Physics Web Application" />
 </svelte:head>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcomeFallback} alt="Welcome" />
-			</picture>
-		</span>
+<section class="flex flex-col justify-center items-center translate-y-16">
+	<h1 class="text-3xl sm:text-3xl lg:text-6xl">Quantum Vision</h1>
+	<p class="text-base sm:text-2xl body-text pt-8 w-2/3 text-center">Explore modern physics and quantum mechanics interactively through this Python-based app</p>
 
-		to your new<br />SvelteKit app
-	</h1>
+	<div class="flex flex-row justify-center pt-8 space-x-6 translate-x-14">
+		<a href="/simulations">
+			<button class="bg-transparent border border-white flex flex-row justify-center items-center rounded-2xl py-2.5 px-3.5 hover:scale-105 hover:translate-y-0.5 transform transition duration-300 ease-in-out group">
+				<span class="pr-2 group-hover:text-gray-200">Get Started</span>
+				<img src={arrow} alt="Arrow" class="w-3 h-3 transform transition duration-300 ease-in-out group-hover:rotate-90" />
+			</button>
+		</a>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
+		<!-- TODO: Add hover effect to linkedin and avatar -->
+		<div class="-translate-y-0.5 flex flex-row">
+			<a class="translate-y-1 translate-x-3" target="_blank" href="https://alexfisher03.github.io/portfolio">
+				<img src={avatar} alt="Avatar" class="w-10 h-10"/>
+			</a>
 
-	<Counter />
+			<a class="z-10 -translate-x-0.5" target="_blank" href="https://www.linkedin.com/in/fisheralexander03/">
+				<img src={linkedin} alt="LinkedIn" class="w-12 h-12"/>
+			</a>
+			
+			<p class="font-light text-xs w-1/2 text-center translate-y-1.5 body-text">Created by Alexander Fisher</p>
+		</div>
+	</div>
+
 </section>
-
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style>
