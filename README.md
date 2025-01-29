@@ -1,2 +1,5 @@
-# QuantumDynamicsVisualizer
-Quantum State Transition Visualizer with Machine Learning Predictions
+# Quantum Vision
+
+Explore modern physics and quantum mechanics interactively through this Python-based app
+
+
