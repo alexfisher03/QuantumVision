@@ -6,7 +6,11 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
 	theme: {
-		extend: {}
+		extend: {
+			screens: {
+				'xxl': '1400px', // Custom breakpoint for 1400px width
+			},
+		},
 	},
 
 	plugins: [typography, forms]

@@ -13,4 +13,7 @@
 </header>
 
 <style>
+	header {
+		view-transition-name: header;
+	}
 </style>

@@ -5,6 +5,7 @@
 
 	import { onMount } from 'svelte';
 
+	// To check if the user is on a mobile device
 	let isMobile = false;
 
 	function checkViewport() {
@@ -17,6 +18,7 @@
 
 		return () => window.removeEventListener('resize', checkViewport);
 	});
+
 </script>
 
 <svelte:head>

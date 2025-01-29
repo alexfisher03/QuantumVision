@@ -2,13 +2,35 @@
 	import Header from './components/Header.svelte';
 	import Nav from './components/Nav.svelte';
 	import '../app.css';
+	import { page } from '$app/state';
+	import { onNavigate } from '$app/navigation';
+
 
 	let { children } = $props();
+	
+	// For view transition
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
+
+	let pageUrl = $state(page);
+
 </script>
 
 <div class="app">
 	<Header />
-	<Nav />
+	{#if pageUrl.url.pathname === '/'}
+		<Nav />
+	{:else if pageUrl.url.pathname === '/simulations'}
+		<Nav />
+	{/if}
 
 	<main>
 		{@render children()}
