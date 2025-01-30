@@ -1,6 +1,10 @@
 <script lang="ts">
 	import logo from '$lib/images/atom-logo.png';
 	import verticalLine from '$lib/images/vertical-line.png';
+
+	import { page } from "$app/state";
+
+	let pageUrl = $state(page);
 </script>
 
 <header class="group">
@@ -10,7 +14,10 @@
 		<img class="pl-2" src={verticalLine} alt="VerticalLine" />
 		<p class="text-white font-light pl-2">QUANTUM VISION</p>
 	</a>
-</header>
+	{#if pageUrl.url.pathname.startsWith('/simulations/') && pageUrl.url.pathname !== '/simulations'}
+		<a href="/simulations" class="flex justify-end pr-16 -translate-y-4 font-bold hover:underline">BACK TO SIMULATIONS</a>
+	{/if}
+	</header>
 
 <style>
 	header {

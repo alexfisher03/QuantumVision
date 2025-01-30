@@ -44,12 +44,24 @@
 	line-height: 1.5;
 }
 
-body {
+body, .body-image-default, .body-image-grey, .body-image-purple {
 	min-height: 100vh;
 	margin: 0;
 	background-attachment: fixed;
 	background-size: 100vw 100vh;
-	background-image: url(./src/lib/images/mesh-gradientblue.png);
+	background-color: #1e1e1e;
+}
+
+.body-image-default {
+	background-image: url(../src/lib/images/mesh-gradientblue.png);
+}
+
+.body-image-grey {
+	background-image: url(../src/lib/images/mesh-gradientgrey.png);
+}
+
+.body-image-purple {
+	background-image: url(../src/lib/images/mesh-gradientpurple.png);
 }
 
 h1,
