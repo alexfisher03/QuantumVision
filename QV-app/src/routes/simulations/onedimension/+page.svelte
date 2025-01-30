@@ -1,7 +1,6 @@
 <script lang="ts">
     import figure1 from '$lib/images/1d_figure.png';
     import arrowdown from '$lib/vectors/transitionarrow_down.svg';
-    import arrowup from '$lib/vectors/transitionarrow_up.svg';
 </script>
 
 <section>
