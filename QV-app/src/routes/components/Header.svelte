@@ -15,7 +15,9 @@
 		<p class="text-white font-light pl-2">QUANTUM VISION</p>
 	</a>
 	{#if pageUrl.url.pathname.startsWith('/simulations/') && pageUrl.url.pathname !== '/simulations'}
-		<a href="/simulations" class="flex justify-end pr-16 -translate-y-4 font-bold hover:underline">BACK TO SIMULATIONS</a>
+		<div class="flex justify-end">
+			<a href="/simulations" class="inline-block pr-16 -translate-y-4 font-bold hover:underline">BACK TO SIMULATIONS</a>
+		</div>
 	{/if}
 	</header>
 
