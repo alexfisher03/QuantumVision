@@ -10,8 +10,18 @@ export default {
 			screens: {
 				'xxl': '1400px', // Custom breakpoint for 1400px width
 			},
+			keyframes: {
+				gradient: {
+					"0%": {backgroundPosition: "0% 50%"},
+					"100%": {backgroundPosition: "100% 50%"}
+				},
+			},
+			animation: {
+				gradient: "gradient 6s linear infinite",
+			},
 		},
 	},
 
 	plugins: [typography, forms]
+
 } satisfies Config;

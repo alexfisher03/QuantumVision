@@ -4,8 +4,10 @@
 	import '../app.css';
 	import { page } from '$app/state';
 	import { onNavigate } from '$app/navigation';
+	import { onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
 
-
+	// Pass in the content from +page.svelte at this scope 
 	let { children } = $props();
 	
 	// For view transition
@@ -20,8 +22,38 @@
 		});
 	});
 
+	// Store the current url in a state variable
 	let pageUrl = $state(page);
 
+	// Function to update the body class background image based on page state
+	function updateBodyClass() {
+		if (!browser) return;
+
+		document.body.classList.remove('body-image-default', 'body-image-grey', 'body-image-purple');
+
+		if (
+			pageUrl.url.pathname.startsWith('/simulations/onedimension') ||
+			pageUrl.url.pathname.startsWith('/simulations/twodimension') ||
+			pageUrl.url.pathname.startsWith('/simulations/threedimension')
+		) {
+			document.body.classList.add('body-image-grey');
+		} else if (
+			pageUrl.url.pathname.startsWith('/simulations/fission') ||
+			pageUrl.url.pathname.startsWith('/simulations/fusion') 
+		) {
+			document.body.classList.add('body-image-purple');
+		} else {
+			document.body.classList.add('body-image-default');
+		}
+	}
+
+	if (browser){$effect(updateBodyClass);} 
+
+	onDestroy(() => {
+		if (!browser) return;
+		document.body.classList.remove("body-image-grey", "body-image-purple");
+		document.body.classList.add("body-image-default");
+	});
 </script>
 
 <div class="app">

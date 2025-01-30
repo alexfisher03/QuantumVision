@@ -44,12 +44,34 @@
 	line-height: 1.5;
 }
 
-body {
+.ligher-text {
+	color: var(--color-theme-grey);
+	line-height: 1.5;
+}
+
+.text-xxs {
+	font-size: 0.6rem;
+	line-height: 0.8rem;
+}
+
+body, .body-image-default, .body-image-grey, .body-image-purple {
 	min-height: 100vh;
 	margin: 0;
 	background-attachment: fixed;
 	background-size: 100vw 100vh;
-	background-image: url(./src/lib/images/mesh-gradientblue.png);
+	background-color: #1e1e1e;
+}
+
+.body-image-default {
+	background-image: url(../src/lib/images/mesh-gradientblue.png);
+}
+
+.body-image-grey {
+	background-image: url(../src/lib/images/mesh-gradientgrey.png);
+}
+
+.body-image-purple {
+	background-image: url(../src/lib/images/mesh-gradientpurple.png);
 }
 
 h1,
@@ -58,6 +80,13 @@ h1 {
 	font: var(--font-mono);
 	color: var(--color-theme-white);
 }
+
+h2 {
+	font: var(--font-body);
+	color: var(--color-theme-white);
+	font: bold;
+}
+
 h2,
 p {
 	font-weight: 400;
