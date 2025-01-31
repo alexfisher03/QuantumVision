@@ -26,7 +26,7 @@
             </div>
         {:else}
             <button class="bg-transparent border border-white flex justify-center items-center rounded-3xl py-16 px-20 pointer-events-none">
-                <span onclick={toggleDescription} class="absolute right-10 -translate-y-10 translate-x-3 hover:scale-110 transform transition ease-in-out duration-300 pointer-events-auto"><img src={x} alt="Close Simulation Instructions"/></span>
+                <span onclick={toggleDescription} class="absolute right-10 -translate-y-10 translate-x-3 scale-90 hover:scale-110 transform transition ease-in-out duration-300 pointer-events-auto"><img src={x} alt="Close Simulation Instructions"/></span>
                 <p class="text-white">Instructions Here, Configure Once Simulation is Written</p>
             </button>
         {/if}
