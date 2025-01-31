@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Simulations</title>
+	<title>Select Simulation</title>
 	<meta name="description" content="Simulations Page For Quantum Vision" />
 </svelte:head>
 

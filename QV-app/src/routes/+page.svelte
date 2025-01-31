@@ -22,7 +22,7 @@
 </script>
 
 <svelte:head>
-	<title>Quantum Vision</title>
+	<title>Home – Quantum Vision </title>
 	<meta name="description" content="Interactive Modern Physics Web Application" />
 </svelte:head>
 

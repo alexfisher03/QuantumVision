@@ -1,3 +1,8 @@
+<svelte:head>
+	<title>1D Particle In A Box</title>
+	<meta name="description" content="1-dimensional particle in a box informational page" />
+</svelte:head>
+
 <script lang="ts">
     import figure1 from '$lib/images/1d_figure.png';
     import arrowdown from '$lib/vectors/transitionarrow_down.svg';
@@ -8,9 +13,9 @@
         <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Particle in a 1-Dimensional Box</h1>
     </div>
 
-    <div class="grid grid-cols-[1.6fr_1.2fr] gap-32 md:gap-40 xxl:gap-52 py-4">
+    <div class="grid grid-cols-[1.6fr_1.2fr] gap-32 md:gap-44 xxl:gap-52 py-4">
         <!-- column 1 content -->
-        <div class="flex flex-col justify-start w-full max-w-[650px]">
+        <div class="flex flex-col justify-start w-full -translate-x-0 sm:-translate-x-12 max-w-[650px]">
             <div class="-translate-x-10">
                 <h2 class="text-2xl font-bold ">The Basics</h2>
                 <p class="text-base body-text pt-4">Before jumping right in, lets discuss first a few points which might clear up some tricky concepts that are introduced when dealing with Quantum Mechanics</p>
@@ -35,7 +40,7 @@
             <div>
                 <h2 class="text-xl font-semibold pt-10 -translate-x-16 translate-y-16">Beyond The Basics</h2>
             </div>
-            <div class="text-start translate-y-16 -translate-x-20">
+            <div class="text-center translate-y-16 -translate-x-20">
                 <p class="text-base body-text pt-3 ml-6 w-full">In quantum mechanics, the particle inside the box cannot have just any energy—it can only exist at specific energy levels. This is what we call <span class="font-semibold text-gray-300">energy quantization</span>.</p>
                 <p class="text-base body-text pt-3 ml-6 w-full">This happens because the wavefunction, which describes the particle’s behavior, must satisfy the boundary conditions—it must fit perfectly inside the box, with zero values at the walls. Think of it like a vibrating string fixed at both ends: only certain wave patterns, or modes, are possible, and each pattern corresponds to a specific energy level.</p>
             </div>
