@@ -1,6 +1,6 @@
 <svelte:head>
-	<title>1D Simulation</title>
-	<meta name="description" content="1-dimensional particle in a box simulation page" />
+    <title>2D Simulation</title>
+    <meta name="description" content="2-dimensional particle in a box simulation page" />
 </svelte:head>
 
 <script lang="ts">
@@ -16,7 +16,7 @@
 
 <section>
     <div class="flex justify-center">
-        <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Particle in a 1-Dimensional Box</h1>
+        <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Particle in a 2-Dimensional Box</h1>
     </div>
 
     <!-- SIMULATION GOES HERE -->
@@ -24,8 +24,8 @@
     
     <div class="flex flex-col items-center justify-center absolute right-10 top-1/2 transform -translate-y-1/2">
         {#if !showDescription}
-            <h2 class="text-2xl font-semibold pt-10 -translate-x-16">1D Quantum States Simulation</h2>
-            <p class="text-base text-gray-300 mt-2 w-[460px]">Observe and explore the quantum behavior of a particle confined in a 1-dimensional box. Adjust the energy levels to see how the particle’s wavefunction and probability distribution change in real time.</p>
+            <h2 class="text-2xl font-semibold pt-10 -translate-x-16">2D Quantum States Simulation</h2>
+            <p class="text-base text-gray-300 mt-2 w-[460px]">Observe and explore the quantum behavior of a particle confined in a 2-dimensional box. Adjust the energy levels to see how the particle’s wavefunction and probability distribution change in real time.</p>
             <div class="pt-3 -translate-x-40">
                 <button onclick={toggleDescription} class="bg-transparent border border-white flex flex-row justify-center items-center rounded-3xl py-3 px-5 hover:scale-105 hover:translate-y-1 hover:underline transform transition duration-300 ease-in-out group text-white text-sm">See Instructions</button>
             </div>
@@ -38,8 +38,8 @@
     </div>
 
     <div class="flex justify-center">
-        <a href="/simulations/onedimension" class="absolute bottom-0 transform pb-3">
-            <img src={arrowup} alt="Move Back To 1D Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
+        <a href="/simulations/twodimension" class="absolute bottom-0 transform pb-3">
+            <img src={arrowup} alt="Move Back To 2D Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
         </a>
     </div>
 </section>
