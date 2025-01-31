@@ -56,8 +56,8 @@
     </div>
 
     <div class="flex justify-center">
-        <a href="/simulations/threedimension/simulation" class="absolute bottom-0 transform pb-3">
-            <img src={arrowdown} alt="Move To 3D Simulation" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
+        <a href="/simulations/threedimension/simulation" class="hover:translate-y-2 transform transition ease-in-out duration-200">
+            <img src={arrowdown} alt="Move To Simulation"/>
         </a>
     </div>
 </section>
