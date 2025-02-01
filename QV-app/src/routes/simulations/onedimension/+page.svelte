@@ -35,7 +35,7 @@
 
         <!-- column 2 content -->
         <div class="flex flex-col items-center">
-            <img src={figure1} alt="1D Figure" class="scale-[135%] translate-y-10"/>
+            <img src={figure1} alt="1D Figure" class="scale-[135%] translate-y-10 xxl:scale-[150%]"/>
             <p class="text-xxs body-text pt-6 text-center translate-y-20 -translate-x-24 ml-20 w-full">To simplify our analysis, we assume the walls of the box have <span class="font-semibold text-gray-300">infinite potential energy</span>. This ensures the particle has zero probability of being at the walls or outside the box. These constraints, called <span class="font-semibold text-gray-300">boundary conditions</span>, are crucial for solving the Schrödinger Equation and determining the particle’s behavior within the box.</p>
             <div>
                 <h2 class="text-xl font-semibold pt-10 -translate-x-16 translate-y-16">Beyond The Basics</h2>
