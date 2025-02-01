@@ -22,7 +22,7 @@
                 <h2 class="text-2xl font-semibold">The Power of Fusion</h2>
                 <p class="text-base body-text pt-4">Fusion is the process of combining light atomic nuclei to create heavier ones. Unlike fission, fusion requires overcoming the repulsive magnetic force, also known as the <span class="font-bold text-gray-300">Coulomb force</span>. This is achieved by providing the nuclei with enough kinetic energy, allowing the <span class="font-bold text-gray-300">Strong Force</span> to bind them together once they are close enough.</p>
             </div>
-            <div class="-translate-x-10 pt-24">
+            <div class="-translate-x-10 pt-16">
                 <h2 class="text-2xl font-semibold">The Mass Defect In Action</h2>
                 <p class="text-base body-text pt-4">A helium nucleus has a mass which is slightly less than the mass of four hydrogen nuclei. This lost <span class="font-bold text-gray-300">mass</span>, similar to fission, is not actually lost or destroyed but converted to <span class="font-bold text-gray-300">energy</span>:</p>
                 <img src={eq1} alt="Equation 3" class="translate-y-3 translate-x-16 pt-4 pb-4"/>
@@ -48,7 +48,7 @@
         </div> 
     </div>
 
-    <div class="flex justify-center translate-y-24 pb-3 pt-3">
+    <div class="flex justify-center translate-y-24 pb-3 pt-8">
         <a href="/simulations/fusion/simulation" class="hover:translate-y-2 transform transition ease-in-out duration-200">
             <img src={arrowdown} alt="Move To Simulation"/>
         </a>
