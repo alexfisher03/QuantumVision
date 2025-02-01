@@ -38,7 +38,7 @@
     </div>
 
     <div class="flex justify-center">
-        <a href="/simulations/onedimension" class="absolute bottom-0 transform pb-3">
+        <a href="/simulations/onedimension" class="absolute bottom-4 transform pb-3">
             <img src={arrowup} alt="Move Back To 1D Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
         </a>
     </div>

@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="flex justify-center">
+    <div class="flex justify-center translate-y-10">
         <a href="/simulations/twodimension/simulation" class="hover:translate-y-2 transform transition ease-in-out duration-200">
             <img src={arrowdown} alt="Move To Simulation"/>
         </a>
