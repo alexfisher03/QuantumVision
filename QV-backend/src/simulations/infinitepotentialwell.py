@@ -21,6 +21,3 @@ class InfinitePotentialWell:
     def computePsi(self, n):
         psi = np.sqrt(2 / self.boundary_length) * np.sin(n * np.pi * self.x_values / self.boundary_length)
         return psi
-
-        
-    

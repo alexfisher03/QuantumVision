@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Header from './components/Header.svelte';
-	import Nav from './components/Nav.svelte';
+	import Header from '$lib/components/Header.svelte';
+	import Nav from '$lib/components/Nav.svelte';
 	import '../app.css';
 	import { page } from '$app/state';
 	import { onNavigate } from '$app/navigation';
