@@ -6,10 +6,10 @@
 <script lang="ts">
     import arrowup from "$lib/vectors/transitionarrow_up.svg";
     import x from "$lib/vectors/x.svg";
-    import { onMount } from 'svelte';
+    import { writable } from "svelte/store";
+    const resultStore = writable<number | null>(null);
 
     let inputNumber : number = 0;
-    let result: number | null = null;
     let errorMessage: string = "";
 
     async function runTest(): Promise<void> {
@@ -23,12 +23,15 @@
             });
             if (response.ok) {
                 const data = await response.json();
-                result = data.result;
+                // console.log("Response ok , data below :");
+                // console.log(data);
+                resultStore.set(data.result);
+                // console.log("Result is : " + result);
             } else {
-                errorMessage = "XD fn : " + (await response.text());
+                errorMessage = "Error during runTest (inside) : " + (await response.text());
             }
         } catch (error) {
-            errorMessage = "You suck bruh " + error;
+            errorMessage = "Error during runTest: " + error;
         }
     }
 
@@ -45,17 +48,16 @@
     </div>
 
     <!-- SIMULATION GOES HERE -->
-    <div class="flex justify-start">
-        <input type="number" bind:value={inputNumber} class="border border-gray-300 rounded-lg p-2"/>
-        <button onclick={runTest} class="bg-purple-500 p-2 text-white">Run Test</button>
-        {#if result !== null}
-            <div class="flex justify-start translate-y-12">
-                <p class="text-white">Your result my goodman: {result}</p>
-            </div>
+    <div class="flex flex-col justify-start max-w-[200px]">
+        <input type="number" bind:value={inputNumber} class="border border-gray-300 rounded-lg p-2" />
+        <button onclick={runTest} class="bg-purple-500 p-2 text-white rounded m-10">
+            Run Test
+        </button>
+        
+        {#if $resultStore !== null}
+            <p class="text-white">Your result my goodman: {$resultStore}</p>
         {/if}
-        {#if errorMessage}
-            <p>{errorMessage}</p>
-        {/if}
+        
     </div>
 
     
