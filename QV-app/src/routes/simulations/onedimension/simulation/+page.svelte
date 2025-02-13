@@ -3,16 +3,16 @@
 	<meta name="description" content="1-dimensional particle in a box simulation page" />
 </svelte:head>
 
-<script lang="ts">
+<script>
     import arrowup from "$lib/vectors/transitionarrow_up.svg";
     import x from "$lib/vectors/x.svg";
     import { writable } from "svelte/store";
-    const resultStore = writable<number | null>(null);
+    const resultStore = writable(null);
 
-    let inputNumber : number = 0;
-    let errorMessage: string = "";
+    let inputNumber = 0;
+    let errorMessage = "";
 
-    async function runTest(): Promise<void> {
+    async function runTest() {
         try {
             const response = await fetch("http://localhost:5000/simulate/test", {
                 method: "POST",
@@ -40,6 +40,8 @@
     function toggleDescription() {
         showDescription = !showDescription;
     }
+
+
 </script>
 
 <section>
