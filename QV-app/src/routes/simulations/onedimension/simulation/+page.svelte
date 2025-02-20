@@ -9,6 +9,39 @@
     import { writable } from "svelte/store";
     const resultStore = writable(null);
 
+    import '@carbon/charts-svelte/styles.css'
+	import { LineChart, ScaleTypes } from "@carbon/charts-svelte";
+	import { scale } from "svelte/transition";
+
+    let data = [
+        { group: "Wavefunction", key: 0, value: 0 },
+        { group: "Wavefunction", key: 1, value: 1 },
+        { group: "Wavefunction", key: 2, value: 4 },
+        { group: "Wavefunction", key: 3, value: 9 },
+        { group: "Wavefunction", key: 4, value: 16 },
+        { group: "Wavefunction", key: 5, value: 9 },
+        { group: "Wavefunction", key: 6, value: 4 },
+        { group: "Wavefunction", key: 7, value: 1 },
+        { group: "Wavefunction", key: 8, value: 0 },
+    ];
+
+    let options = {
+        title: "|ψ(x)|² : 1D Potential Well",
+        axes: {
+            bottom: { title: "Position (x)", mapsTo: "key", scaleType: ScaleTypes.LINEAR },
+            left: { title: "Potential Energy (V)", mapsTo: "value", scaleType: ScaleTypes.LINEAR, ticks: { formatter: () => "" } }, 
+        },
+        height: "400px",
+        width: "550px",
+        curve: "curveMonotoneX",
+        theme: "g90",
+        legend: { enabled: false }, 
+        tooltip: { enabled: true }, 
+        grid: { x: { enabled: false }, y: { enabled: false } },
+        color: { scale: { Wavefunction: "#0000FF" } },
+        toolbar: { enabled: false },
+    };
+
     let inputNumber = 0;
     let errorMessage = "";
 
@@ -50,16 +83,10 @@
     </div>
 
     <!-- SIMULATION GOES HERE -->
-    <div class="flex flex-col justify-start max-w-[200px]">
-        <input type="number" bind:value={inputNumber} class="border border-gray-300 rounded-lg p-2" />
-        <button onclick={runTest} class="bg-purple-500 p-2 text-white rounded m-10">
-            Run Test
-        </button>
-        
-        {#if $resultStore !== null}
-            <p class="text-white">Your result my goodman: {$resultStore}</p>
-        {/if}
-        
+    <div class="flex flex-col justify-start max-w-[500px] pt-36">
+        <div class="flex justify-center w-full">
+            <LineChart {data} {options} />
+        </div> 
     </div>
 
     
@@ -103,4 +130,5 @@
         background-size: 300% 300%;
         background-clip: text;
     }
+
 </style>

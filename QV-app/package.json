@@ -16,6 +16,7 @@
 		"test": "npm run test:unit -- --run"
 	},
 	"devDependencies": {
+		"@carbon/charts-svelte": "^1.22.18",
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
 		"@fontsource/fira-mono": "^5.0.0",
