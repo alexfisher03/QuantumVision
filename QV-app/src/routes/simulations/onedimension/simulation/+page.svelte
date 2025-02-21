@@ -7,26 +7,25 @@
     import arrowup from "$lib/vectors/transitionarrow_up.svg";
     import x from "$lib/vectors/x.svg";
     import { writable } from "svelte/store";
-    const resultStore = writable(null);
 
     import '@carbon/charts-svelte/styles.css'
 	import { LineChart, ScaleTypes } from "@carbon/charts-svelte";
-	import { scale } from "svelte/transition";
 
-    let data = [
-        { group: "Wavefunction", key: 0, value: 0 },
-        { group: "Wavefunction", key: 1, value: 1 },
-        { group: "Wavefunction", key: 2, value: 4 },
-        { group: "Wavefunction", key: 3, value: 9 },
-        { group: "Wavefunction", key: 4, value: 16 },
-        { group: "Wavefunction", key: 5, value: 9 },
-        { group: "Wavefunction", key: 6, value: 4 },
-        { group: "Wavefunction", key: 7, value: 1 },
-        { group: "Wavefunction", key: 8, value: 0 },
-    ];
+    import { computeWaveFunction } from "$lib/scripts/wavefunction.js";
+
+    let selectedEnergyLevel = writable(1);
+    let data = $state(computeWaveFunction(1));
+
+    $effect(() => {
+    selectedEnergyLevel.subscribe(n => {
+        data = computeWaveFunction(n);
+        });
+    });
+
+    let energyLevels = [1, 2, 3, 4];
 
     let options = {
-        title: "|ψ(x)|² : 1D Potential Well",
+        title: "|ψ(x)|² : 1D Infinite Potential Well",
         axes: {
             bottom: { title: "Position (x)", mapsTo: "key", scaleType: ScaleTypes.LINEAR },
             left: { title: "Potential Energy (V)", mapsTo: "value", scaleType: ScaleTypes.LINEAR, ticks: { formatter: () => "" } }, 
@@ -36,38 +35,22 @@
         curve: "curveMonotoneX",
         theme: "g90",
         legend: { enabled: false }, 
-        tooltip: { enabled: true }, 
+        tooltip: { enabled: false }, 
         grid: { x: { enabled: false }, y: { enabled: false } },
-        color: { scale: { Wavefunction: "#0000FF" } },
         toolbar: { enabled: false },
+        points: { enabled: false },
+        
     };
 
-    let inputNumber = 0;
-    let errorMessage = "";
-
-    async function runTest() {
-        try {
-            const response = await fetch("http://localhost:5000/simulate/test", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ inputNumber: inputNumber})
-            });
-            if (response.ok) {
-                const data = await response.json();
-                // console.log("Response ok , data below :");
-                // console.log(data);
-                resultStore.set(data.result);
-                // console.log("Result is : " + result);
-            } else {
-                errorMessage = "Error during runTest (inside) : " + (await response.text());
-            }
-        } catch (error) {
-            errorMessage = "Error during runTest: " + error;
-        }
+    /**
+     * Sets the selected energy level.
+     * @param {number} level - The selected energy level.
+    */
+    function selectEnergyLevel(level) {
+        selectedEnergyLevel.set(level);
     }
 
+    // Description Logic
     let showDescription = $state(false);
 
     function toggleDescription() {
@@ -82,11 +65,44 @@
         <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Particle in a 1-Dimensional Box</h1>
     </div>
 
-    <!-- SIMULATION GOES HERE -->
-    <div class="flex flex-col justify-start max-w-[500px] pt-36">
+    <div class="flex flex-col justify-start max-w-[500px] md:pt-16 xl:pt-24 xxl:pt-36 -translate-x-24">
         <div class="flex justify-center w-full">
             <LineChart {data} {options} />
         </div> 
+        <div class="relative w-full pt-6 flex justify-center -translate-x-6">
+            <svg class="w-[300px] md:w-[400px] lg:w-[500px] h-[120px]" viewBox="0 0 300 120">
+                {#each energyLevels as level, i}                    
+                <rect x="15" y="{110 - level * 20 - 5}" width="270" height="10"
+                fill="transparent" class="cursor-pointer"
+                onclick={() => selectEnergyLevel(level)}
+                />
+            
+                <line x1="20" x2="280" y1="{110 - level * 20}" y2="{110 - level * 20}" 
+                    stroke={ $selectedEnergyLevel === level ? 'red' : 'white' } 
+                    stroke-width="2"
+                    class="cursor-pointer hover:stroke-purple-500 hover:stroke-[4px] transition duration-300 ease-in-out"
+                    onclick={() => selectEnergyLevel(level)}
+                />        
+                
+                <text x="285" y="{110 - level * 20 + 6}" 
+                    fill={ $selectedEnergyLevel === level ? 'red' : 'white' } 
+                    font-size="14px"
+                    font-weight="bold"
+                    class="cursor-pointer hover:fill-purple-500 transition duration-300 ease-in-out"
+                    onclick={() => selectEnergyLevel(level)}
+                >
+                    E{level}
+                </text>
+                {/each}
+            </svg>
+            <div class="text-white text-left pt-6">
+                {#if $selectedEnergyLevel}
+                    Selected Energy Level: <span class="text-red-500 font-bold italic text-lg ml-3">E{$selectedEnergyLevel}</span>
+                {:else}
+                    Click an energy level to select one.
+                {/if}
+            </div>
+        </div>
     </div>
 
     
@@ -98,15 +114,41 @@
                 <button onclick={toggleDescription} class="bg-transparent border border-white flex flex-row justify-center items-center rounded-3xl py-3 px-5 hover:scale-105 hover:translate-y-1 hover:underline transform transition duration-300 ease-in-out group text-white text-sm">See Instructions</button>
             </div>
         {:else}
-            <button class="bg-transparent border border-white flex justify-center items-center rounded-3xl py-16 px-20 pointer-events-none">
-                <span onclick={toggleDescription} class="absolute right-10 -translate-y-10 translate-x-3 scale-90 hover:scale-110 transform transition ease-in-out duration-300 pointer-events-auto"><img src={x} alt="Close Simulation Instructions"/></span>
-                <p class="text-white">Instructions Here, Configure Once Simulation is Written</p>
-            </button>
+            <div class="border border-white flex flex-col justify-start items-start rounded-3xl p-8 w-5/6 relative shadow-lg text-left space-y-4 translate-x-6">
+            
+                <span onclick={toggleDescription} class="absolute top-4 right-4 scale-90 hover:scale-110 transition ease-in-out duration-300 cursor-pointer">
+                    <img src={x} alt="Close Simulation Instructions" />
+                </span>
+        
+                <h3 class="text-lg font-semibold text-white">How to Use This Simulation</h3>
+                <p class="text-sm text-gray-300">
+                    Click an <b>energy level (E₁, E₂, ...)</b> to observe how the wavefunction and probability distribution change.
+                </p>
+        
+                <h3 class="text-lg font-semibold text-white">Understanding the Graph</h3>
+                <p class="text-sm text-gray-300">
+                    The graph displays <b>|ψ(x)|²</b>, showing where the particle is most likely to be found.
+                </p>
+                <ul class="list-disc pl-4 text-sm text-gray-400">
+                    <li><b>X-axis:</b> Position inside the box.</li>
+                    <li><b>Y-axis:</b> Probability density.</li>
+                    <li><b>Higher energy levels:</b> More oscillations.</li>
+                </ul>
+
+                <h3 class="text-lg font-semibold text-white">Energy Levels</h3>
+                <p class="text-sm text-gray-300">
+                    Higher quantum states result in more peaks and nodes in the wavefunction.
+                </p>
+
+                <p class="text-sm text-gray-400 italic">
+                    Try selecting different energy levels and observe the differences!
+                </p>
+            </div>
         {/if}
     </div>
 
-    <div class="flex justify-center">
-        <a href="/simulations/onedimension" class="absolute bottom-4 transform pb-3">
+    <div class="flex justify-center pt-6 mt-auto">
+        <a href="/simulations/onedimension" class="relative">
             <img src={arrowup} alt="Move Back To 1D Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
         </a>
     </div>
@@ -130,5 +172,4 @@
         background-size: 300% 300%;
         background-clip: text;
     }
-
 </style>
