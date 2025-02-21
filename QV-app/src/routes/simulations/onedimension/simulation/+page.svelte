@@ -91,7 +91,7 @@
                     class="cursor-pointer hover:fill-purple-500 transition duration-300 ease-in-out"
                     onclick={() => selectEnergyLevel(level)}
                 >
-                    E{level}
+                    n = {level}
                 </text>
                 {/each}
             </svg>
@@ -106,7 +106,7 @@
     </div>
 
     
-    <div class="flex flex-col items-center justify-center absolute right-10 top-1/2 transform -translate-y-1/2">
+    <div class="flex flex-col items-center justify-center absolute right-10 top-1/2 transform -translate-y-1/2 pt-36 xl:pt-0 xxl:pt-0">
         {#if !showDescription}
             <h2 class="text-2xl font-semibold pt-10 -translate-x-16">1D Quantum States Simulation</h2>
             <p class="text-base text-gray-300 mt-2 w-[460px]">Observe and explore the quantum behavior of a particle confined in a 1-dimensional box. Adjust the energy levels to see how the particle’s wavefunction and probability distribution change in real time.</p>
