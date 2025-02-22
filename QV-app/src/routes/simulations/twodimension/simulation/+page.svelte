@@ -31,7 +31,7 @@
     </div>
     {#if !showDescription}
     <!-- SIMULATION -->
-    <div class={loadingGraph ? "flex flex-col justify-start" : "flex flex-col justify-start lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px] md:pt-16 xl:pt-24 xxl:pt-36 lg:translate-y-12 lg:-translate-x-12 xl:-translate-x-24"}>
+    <div class={loadingGraph ? "flex flex-col justify-start" : "flex flex-col justify-start lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px] md:pt-16 xl:pt-24 xxl:pt-48 lg:translate-y-12 lg:-translate-x-12 xl:-translate-x-24 xxl:mt-24"}>
         {#if loadingGraph}
             <div class="-translate-y-12 lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px]">
                 <WidgetPlaceholder />

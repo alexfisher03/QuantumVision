@@ -4,6 +4,7 @@
     import { computeWaveFunction2D } from '$lib/scripts/wavefunction2D.js';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
+    import { tick } from 'svelte';
 	
 	// Quantum numbers for the x and y directions.
     let n_x = $state(1);
@@ -73,9 +74,12 @@
     const arrowY = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), arrowOrigin, arrowLengthZ, arrowColor);
     const arrowZ = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), arrowOrigin, arrowLength, arrowColor);
 	
-	onMount(() => {
-		updateGeometry();
-	});
+	onMount(async () => {
+        await tick();
+        // Now ensure the container has its final dimensions:
+        window.dispatchEvent(new Event('resize'));
+        updateGeometry();
+    });
 	
 	$effect(() => {
 	    updateGeometry();
