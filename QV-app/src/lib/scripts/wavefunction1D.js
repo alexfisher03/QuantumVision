@@ -5,7 +5,7 @@
  * @param {number} numPoints - number of points to compute the wave function
  */
 
-export function computeWaveFunction(n, L = 1, numPoints = 100) {
+export function computeWaveFunction(n, L = 1, numPoints = 200) {
     let data = [];
 
     for (let i = 0; i < numPoints; i++) {

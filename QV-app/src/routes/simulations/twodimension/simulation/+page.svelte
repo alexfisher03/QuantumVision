@@ -6,71 +6,42 @@
 <script>
     import arrowup from "$lib/vectors/transitionarrow_up.svg";
     import x from "$lib/vectors/x.svg";
-    import * as THREE from 'three';
-    import * as SC from 'svelte-cubed';
+    import { WidgetPlaceholder } from 'flowbite-svelte';
+    import { onMount } from "svelte";
+
+    let WavefunctionGraph2D = $state();
+    let loadingGraph = $state(true);
+
+    onMount(async () => {
+		const module = await import('$lib/components/WavefunctionGraph2D.svelte');
+		WavefunctionGraph2D = module.default;
+		loadingGraph = false;
+	});
 
     let showDescription = $state(false);
 
     function toggleDescription() {
         showDescription = !showDescription;
     }
-
-    let width = $state(1);
-	let height = $state(1);
-	let depth = $state(1);
-
-	let spin = $state(0);
-
-	SC.onFrame(() => {
-		spin += 0.006;
-	});
 </script>
 
 <section>
     <div class="flex justify-center">
         <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Particle in a 2-Dimensional Box</h1>
     </div>
-
-    <!-- SIMULATION GOES HERE -->
-     <div class="flex flex-col justify-start max-w-[500px] min-h-[400px] md:pt-16 xl:pt-24 xxl:pt-36 -translate-x-24">
-        <SC.Canvas
-            antialias
-            background={new THREE.Color('papayawhip')}
-            fog={new THREE.FogExp2('papayawhip', 0.1)}
-            shadows
-        >
-            <SC.Group position={[0, -height / 2, 0]}>
-                <SC.Mesh
-                    geometry={new THREE.PlaneGeometry(50, 50)}
-                    material={new THREE.MeshStandardMaterial({ color: 'burlywood' })}
-                    rotation={[-Math.PI / 2, 0, 0]}
-                    receiveShadow
-                />
-                <SC.Primitive
-                    object={new THREE.GridHelper(50, 50, 'papayawhip', 'papayawhip')}
-                    position={[0, 0.001, 0]}
-                />
-            </SC.Group>
-
-            <SC.Mesh
-                geometry={new THREE.BoxGeometry()}
-                material={new THREE.MeshStandardMaterial({ color: 0xff0000 })}
-                scale={[width, height, depth]}
-                rotation={[0, spin, 0]}
-                castShadow
-            />
-
-            <SC.PerspectiveCamera position={[1, 1, 3]} />
-            <SC.OrbitControls enableZoom={false} maxPolarAngle={Math.PI * 0.51} />
-            <SC.AmbientLight intensity={0.6} />
-            <SC.DirectionalLight intensity={0.6} position={[-2, 3, 2]} shadow={{ mapSize: [2048, 2048] }} />
-        </SC.Canvas>
-        <div class="controls">
-            <label><input type="range" bind:value={width} min={0.1} max={3} step={0.1} /> width</label>
-            <label><input type="range" bind:value={height} min={0.1} max={3} step={0.1} /> height</label>
-            <label><input type="range" bind:value={depth} min={0.1} max={3} step={0.1} /> depth</label>
-        </div>
-     </div>
+    {#if !showDescription}
+    <!-- SIMULATION -->
+    <div class={loadingGraph ? "flex flex-col justify-start" : "flex flex-col justify-start lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px] md:pt-16 xl:pt-24 xxl:pt-36 lg:translate-y-12 lg:-translate-x-12 xl:-translate-x-24"}>
+        {#if loadingGraph}
+            <div class="-translate-y-12 lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px]">
+                <WidgetPlaceholder />
+            </div>
+        {:else}
+        <h2 class="-translate-y-28">|ψ(x)|² : 2D Infinite Potential Well</h2>
+            <WavefunctionGraph2D/>
+        {/if}
+    </div>
+    {/if}
 
     
     <div class="flex flex-col items-center justify-center absolute right-10 top-1/2 transform -translate-y-1/2 pt-36 xl:pt-0 xxl:pt-0">
@@ -81,7 +52,7 @@
                 <button onclick={toggleDescription} class="bg-transparent border border-white flex flex-row justify-center items-center rounded-3xl py-3 px-5 hover:scale-105 hover:translate-y-1 hover:underline transform transition duration-300 ease-in-out group text-white text-sm">See Instructions</button>
             </div>
         {:else}
-            <div class="border border-white flex flex-col justify-start items-start rounded-3xl p-8 w-5/6 relative shadow-lg text-left space-y-4 translate-x-6">
+            <div class="border border-white flex flex-col justify-start items-start rounded-3xl p-8 w-5/6 relative shadow-lg text-left space-y-4 mb-6">
             
                 <span onclick={toggleDescription} class="absolute top-4 right-4 scale-90 hover:scale-110 transition ease-in-out duration-300 cursor-pointer">
                     <img src={x} alt="Close Simulation Instructions" />
@@ -89,37 +60,39 @@
         
                 <h3 class="text-lg font-semibold text-white">How to Use This Simulation</h3>
                 <p class="text-sm text-gray-300">
-                    Click an <b>energy level (E₁, E₂, ...)</b> to observe how the wavefunction and probability distribution change.
+                Use the dropdown menus to change the quantum numbers <b>nₓ</b> and <b>nᵧ</b>. These values determine the energy state of the particle confined in the 2D box. When you select new quantum numbers, the probability distribution (|ψ(x)|²) updates to reflect the new state.
                 </p>
-        
-                <h3 class="text-lg font-semibold text-white">Understanding the Graph</h3>
+
+                <h3 class="text-lg font-semibold text-white">Understanding the Heatmap and Graph</h3>
                 <p class="text-sm text-gray-300">
-                    The graph displays <b>|ψ(x)|²</b>, showing where the particle is most likely to be found.
+                The heatmap on the right displays the probability density of the particle. The gradient shows how likely the particle is to be found at a given point: blue indicates low probability, transitioning through purple and pink to yellow at the highest probability peaks.
                 </p>
                 <ul class="list-disc pl-4 text-sm text-gray-400">
-                    <li><b>X-axis:</b> Position inside the plane with respect to x.</li>
-                    <li><b>Y-axis:</b> Position inside the box with respect to y.</li>
-                    <li><b>Z-axis:</b> Probabilty of finding the particle in a given point.</li>
-                    <li><b>Higher energy levels:</b> More oscillations.</li>
+                <li><b>X-axis:</b> Horizontal position within the box.</li>
+                <li><b>Y-axis:</b> Depth position within the box.</li>
+                <li><b>Z-axis:</b> Vertical position (reflecting probability density) within the box.</li>
+                <li><b>Heatmap Colors:</b> Represent probability density from 0% (low) to high values (peaks).</li>
+                <li><b>Boundaries:</b> The edges of the plot represent infinite potential energy walls, where the wavefunction goes to zero.</li>
                 </ul>
 
                 <h3 class="text-lg font-semibold text-white">Energy Levels</h3>
                 <p class="text-sm text-gray-300">
-                    Higher quantum states result in more peaks and nodes in the wavefunction.
+                Higher quantum numbers lead to more oscillations and nodes in the wavefunction. Experiment with different combinations of <b>nₓ</b> and <b>nᵧ</b> to explore how the particle's behavior changes.
                 </p>
-
                 <p class="text-sm text-gray-400 italic">
-                    Try selecting different energy levels and observe the differences!
+                Try different energy states to see how the probability distribution and heatmap vary across the 2D box.
                 </p>
             </div>
         {/if}
     </div>
 
+    {#if !showDescription}
     <div class="flex justify-center">
-        <a href="/simulations/twodimension" class="absolute bottom-4 transform pb-3">
+        <a href="/simulations/twodimension" class="pt-40 bottom-4 transform pb-3">
             <img src={arrowup} alt="Move Back To 2D Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
         </a>
     </div>
+    {/if}
 </section>
 
 <style>
