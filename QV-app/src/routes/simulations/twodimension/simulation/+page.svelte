@@ -29,9 +29,10 @@
     <div class="flex justify-center">
         <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Particle in a 2-Dimensional Box</h1>
     </div>
+    
     {#if !showDescription}
     <!-- SIMULATION -->
-    <div class={loadingGraph ? "flex flex-col justify-start" : "flex flex-col justify-start lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px] md:pt-16 xl:pt-24 xxl:pt-48 lg:translate-y-12 lg:-translate-x-12 xl:-translate-x-24 xxl:mt-24"}>
+    <div class={loadingGraph ? "flex flex-col justify-start" : "flex flex-col justify-start lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px] md:pt-16 xl:pt-24 xxl:pt-48 lg:translate-y-12 lg:-translate-x-18 xl:-translate-x-24 xxl:mt-24"}>
         {#if loadingGraph}
             <div class="-translate-y-12 lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px]">
                 <WidgetPlaceholder />

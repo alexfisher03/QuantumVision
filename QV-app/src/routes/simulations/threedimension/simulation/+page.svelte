@@ -6,6 +6,17 @@
 <script lang="ts">
     import arrowup from "$lib/vectors/transitionarrow_up.svg";
     import x from "$lib/vectors/x.svg";
+    import { WidgetPlaceholder } from 'flowbite-svelte';
+    import { onMount } from "svelte";
+
+    let WavefunctionGraph3D = $state();
+    let loadingGraph = $state(true);
+
+    onMount(async () => {
+		const module = await import('$lib/components/WavefunctionGraph3D.svelte');
+		WavefunctionGraph3D = module.default;
+		loadingGraph = false;
+	});
 
     let showDescription = $state(false);
 
@@ -19,7 +30,19 @@
         <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Particle in a 3-Dimensional Box</h1>
     </div>
 
+    {#if !showDescription}
     <!-- SIMULATION GOES HERE -->
+    <div class={loadingGraph ? "flex flex-col justify-start" : "flex flex-col justify-start lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px] md:pt-16 xl:pt-24 xxl:pt-48 lg:translate-y-12 lg:-translate-x-18 xl:-translate-x-24 xxl:mt-24"}>
+        {#if loadingGraph}
+            <div class="-translate-y-12 lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px]">
+                <WidgetPlaceholder />
+            </div>
+        {:else}
+        <h2 class="-translate-y-28">|ψ(x)|² : 3D Infinite Potential Well</h2>
+            <WavefunctionGraph3D/>
+        {/if}
+    </div>
+    {/if}
 
     
     <div class="flex flex-col items-center justify-center absolute right-10 top-1/2 transform -translate-y-1/2">
@@ -37,11 +60,13 @@
         {/if}
     </div>
 
+    {#if !showDescription}
     <div class="flex justify-center">
         <a href="/simulations/threedimension" class="absolute bottom-4 transform pb-3">
             <img src={arrowup} alt="Move Back To 3D Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
         </a>
     </div>
+    {/if}
 </section>
 
 <style>
