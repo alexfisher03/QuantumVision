@@ -6,7 +6,7 @@
     import { writable } from 'svelte/store';
     import { tick } from 'svelte';
 	
-	// Quantum numbers for the x and y directions.
+	// Quantum numbers
     let n_x = $state(1);
 	let n_y = $state(1);
     
@@ -68,7 +68,7 @@
     const arrowOrigin = new THREE.Vector3(-L/2, 0, -L/2);
     const arrowLength = L + 0.25;
     const arrowLengthZ = L - 0.5;
-    const arrowColor = 0xffffff; // white
+    const arrowColor = 0xb3b3b3;
 
     const arrowX = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), arrowOrigin, arrowLength, arrowColor);
     const arrowY = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), arrowOrigin, arrowLengthZ, arrowColor);
@@ -76,7 +76,7 @@
 	
 	onMount(async () => {
         await tick();
-        // Now ensure the container has its final dimensions:
+        // ensure the container has its final dimensions
         window.dispatchEvent(new Event('resize'));
         updateGeometry();
     });
@@ -94,7 +94,7 @@
 		shadows
 		fog={new THREE.FogExp2('black', 0.1)}
 	>
-		<!-- Grid plane group: a horizontal plane and grid helper. -->
+		<!-- Grid plane group: a horizontal plane and grid helper -->
 		<SC.Group>
 			<SC.Mesh
 				geometry={new THREE.PlaneGeometry(50, 50)}
@@ -124,7 +124,7 @@
 			receiveShadow
 		/>
 		
-		<!-- Position the camera to capture a nice angled view -->
+		<!-- camera position to capture angled view -->
 		<SC.PerspectiveCamera position={[1, 1, 1.5]} />
 		<SC.OrbitControls enableZoom={false} maxPolarAngle={Math.PI * 0.45} />
 		<SC.AmbientLight intensity={0.5} />
@@ -136,12 +136,12 @@
 	</SC.Canvas>
     <!-- Heat map legend -->
     <div class="absolute right-2 top-0 bottom-0 flex flex-col items-center pointer-events-none h-4/5 translate-y-8">
-        <!-- The gradient bar -->
+        <!-- gradient bar -->
         <div
           class="w-4 h-full border border-white"
           style="background: linear-gradient(to top, blue 0%, #a855f7 33%, #ec4899 66%, #eab308 100%);"
         ></div>
-        <!-- The labels -->
+        <!-- labels -->
         <div class="absolute right-8 top-0 bottom-0 flex flex-col justify-between text-xs text-white">
           <span>100%</span>
           <span>75%</span>
@@ -149,7 +149,7 @@
           <span>25%</span>
           <span>0%</span>
         </div>
-      </div>
+    </div>
     <div class="mb-4 translate-y-64 flex justify-center -translate-x-6">
         <label class="mr-4 text-white text-lg">
             nₓ :
