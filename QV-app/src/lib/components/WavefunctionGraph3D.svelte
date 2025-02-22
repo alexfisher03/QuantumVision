@@ -6,7 +6,6 @@
 	import { computeWaveFunction3D } from '$lib/scripts/wavefunction3D.js';
 
 	const L = 1;
-
 	// Transparent cube (confinement area)
 	let cubeGeometry = new THREE.BoxGeometry(L, L, L);
 	const edges = new THREE.EdgesGeometry(cubeGeometry);
@@ -15,8 +14,12 @@
 
 	// Orbital cloud (starting as a sphere)
 	let orbitalGeometry = new THREE.SphereGeometry(0.45, 32, 32);
-	const orbitalMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, transparent: true, opacity: 0.8, side: THREE.DoubleSide });
-	let orbitalMesh = new THREE.Mesh(orbitalGeometry, orbitalMaterial);
+	const orbitalMaterial = new THREE.MeshStandardMaterial({ 
+		vertexColors: true, 
+		transparent: true, 
+		opacity: 0.8, 
+		side: THREE.DoubleSide 
+	});
 	let orbitalGeometryStore = writable(orbitalGeometry);
 
 	// Quantum numbers
@@ -63,4 +66,31 @@
 		<SC.AmbientLight intensity={0.5} />
 		<SC.DirectionalLight intensity={0.6} position={[2, 2, 2]} shadow={{ mapSize: [1024, 1024] }} />
 	</SC.Canvas>
+
+	<div class="mb-4 translate-y-56 flex justify-center -translate-x-6">
+		<label class="text-white text-lg mr-4">
+			n<sub>x</sub>:
+			<select bind:value={n_x} on:change={updateOrbital} class="rounded-lg text-black bg-slate-300 ml-1 p-1">
+				{#each [1, 2, 3, 4] as num}
+					<option value={num}>{num}</option>
+				{/each}
+			</select>
+		</label>
+		<label class="text-white text-lg mr-4">
+			n<sub>y</sub>:
+			<select bind:value={n_y} on:change={updateOrbital} class="rounded-lg text-black bg-slate-300 ml-1 p-1">
+				{#each [1, 2, 3, 4] as num}
+					<option value={num}>{num}</option>
+				{/each}
+			</select>
+		</label>
+		<label class="text-white text-lg">
+			n<sub>z</sub>:
+			<select bind:value={n_z} on:change={updateOrbital} class="rounded-lg text-black bg-slate-300 ml-1 p-1">
+				{#each [1, 2, 3, 4] as num}
+					<option value={num}>{num}</option>
+				{/each}
+			</select>
+		</label>
+	</div>
 </div>
