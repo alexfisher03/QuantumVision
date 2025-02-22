@@ -13,10 +13,10 @@
     let loadingGraph = $state(true);
 
     onMount(async () => {
-		const module = await import('$lib/components/WavefunctionGraph3D.svelte');
-		WavefunctionGraph3D = module.default;
-		loadingGraph = false;
-	});
+      const module = await import('$lib/components/WavefunctionGraph3D.svelte');
+      WavefunctionGraph3D = module.default;
+      loadingGraph = false;
+    });
 
     let showDescription = $state(false);
 
