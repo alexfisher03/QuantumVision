@@ -46,6 +46,8 @@
 		"vitest": "^3.0.0"
 	},
 	"dependencies": {
-		"plotly.js": "^3.0.0"
+		"plotly.js": "^3.0.0",
+		"svelte-cubed": "^0.2.1",
+		"three": "^0.173.0"
 	}
 }
