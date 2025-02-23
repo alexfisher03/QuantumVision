@@ -42,7 +42,7 @@
     {#if !showDescription}
     <div class={loadingGraph ? "flex flex-col justify-start" : "flex flex-col justify-start lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px] md:pt-16 xl:pt-24 xxl:pt-48 lg:translate-y-0 lg:-translate-x-18 xl:-translate-x-24 xxl:mt-24"}>
         {#if loadingGraph}
-            <div class="-translate-y-12 lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px]">
+            <div class="-translate-y-12 lg:w-[400px] lg:h-[200px] xl:w-[300px] xl:h-[300px]">
                 <WidgetPlaceholder />
             </div>
         {:else}
@@ -85,8 +85,8 @@
 
     {#if !showDescription}
       <div class="flex justify-center">
-          <a href="/simulations/twodimension" class="pt-40 bottom-4 transform pb-3">
-              <img src={arrowup} alt="Move Back To 2D Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
+          <a href="/simulations/fission" class="pt-40 bottom-4 transform pb-3">
+              <img src={arrowup} alt="Move Back To Fission Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
           </a>
       </div>
       {/if}
