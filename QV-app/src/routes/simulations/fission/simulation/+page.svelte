@@ -82,7 +82,7 @@
             </button>
           </div>
         {:else}
-        <div class="flex justify-center -translate-x-16">
+        <div class="flex justify-center translate-x-3">
           <div class="border border-white flex flex-col justify-start items-start rounded-3xl p-8 w-4/5 relative shadow-lg text-left space-y-4 mb-6">
             <span onclick={toggleDescription} class="absolute top-4 right-4 scale-90 hover:scale-110 transition duration-300 cursor-pointer">
               <img src={x} alt="Close Simulation Instructions" />
@@ -108,7 +108,10 @@
       
             <h3 class="text-lg font-semibold text-white">Adjusting Uranium Density</h3>
             <p class="text-sm text-gray-300">
-              Use the dropdown menu to select the density of uranium nuclei. Lower density results in fewer random nuclei (e.g. 40), while higher density (e.g. 80) simulates a more critical mass.
+              Use the dropdown menu to select the density of uranium nuclei. Lower density results in fewer random nuclei (e.g. 40), while higher density (e.g. 80) simulates a more critical mass. 
+            </p>
+            <p class="text-sm text-gray-400 italic">
+              For reference, a typical nuclear bomb contains on the order of 1.28×10^24 uranium nuclei—an astonishingly large number that highlights the atomic scale of these reactions. Energy released in these reactions is measured in mega–electronvolts (MeV), a unit that conveniently describes the enormous energy changes occurring at the nuclear level.
             </p>
       
             <h3 class="text-lg font-semibold text-white">Navigation and Controls</h3>

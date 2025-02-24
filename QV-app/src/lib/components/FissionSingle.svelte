@@ -324,7 +324,7 @@
 			<SC.Primitive object={energyWave} />
 		{/if}
 		<SC.PerspectiveCamera position={[2, 1.5, 1.5]} />
-		<SC.OrbitControls enableZoom={true} minDistance={3} maxDistance={4} />
+		<SC.OrbitControls enableZoom={true} minDistance={1} maxDistance={6} />
 		<SC.AmbientLight intensity={0.5} />
 		<SC.DirectionalLight intensity={0.6} position={[2, 2, 2]} />
 	</SC.Canvas>

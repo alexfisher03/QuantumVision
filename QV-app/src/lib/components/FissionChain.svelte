@@ -14,6 +14,9 @@
   const productNeutronSpeed = baseSpeed * 6;
   const collisionThreshold = 0.2; // distance threshold to trigger fission
 
+  // total energy produced by fission events
+  let totalEnergy: number = 0;
+
   // uranium density; default is 39 (least dense)
   let density: number = 39; // displayed as "Nuclei Density: 39"
   let densityDisplay: number = density + 1;
@@ -110,6 +113,7 @@
   // helper to split a nucleus into fragments, spawn product neutrons, and create an energy wave
   function splitNucleus(event: any) {
     if (!event.nucleus) return;
+	totalEnergy += 200;
     eventsGroup.remove(event.nucleus);
     event.nucleus = null;
     event.hasSplit = true;
@@ -175,6 +179,7 @@
 
   // reset the simulation completely
   function resetSimulation() {
+	totalEnergy = 0;
     activeFissions = [];
     while (eventsGroup.children.length > 0) {
       eventsGroup.remove(eventsGroup.children[0]);
@@ -332,12 +337,12 @@
     <!-- render fission events (vibrating nuclei, fragments, product neutrons, energy waves) -->
     <SC.Primitive object={eventsGroup} />
     <SC.PerspectiveCamera position={[1.5, 1.5, 1.5]} />
-    <SC.OrbitControls enableZoom={true} minDistance={0.5} maxDistance={3} />
+    <SC.OrbitControls enableZoom={true} minDistance={1} maxDistance={6} />
     <SC.AmbientLight intensity={0.5} />
     <SC.DirectionalLight intensity={0.6} position={[2, 2, 2]} />
   </SC.Canvas>
   <!-- display current uranium density -->
-  <div class="font-bold text-white text-sm mt-2 ml-3 translate-y-40 translate-x-64 xl:translate-x-[350px] xxl:translate-x-[350px] xl:translate-y-56 xxl:translate-y-36">
+  <div class="font-bold italic text-white text-sm mt-2 ml-3 translate-y-40 translate-x-64 xl:translate-x-[350px] xxl:translate-x-[350px] xl:translate-y-56 xxl:translate-y-36">
     Nuclei Density: <span class="text-red-500 underline font-bold">{densityDisplay}</span>
   </div>
   <button 
@@ -368,5 +373,7 @@
     <DropdownItem on:click={() => handleDensitySelect(39)}>40</DropdownItem>
     <DropdownItem on:click={() => handleDensitySelect(59)}>60</DropdownItem>
     <DropdownItem on:click={() => handleDensitySelect(79)}>80</DropdownItem>
+	<DropdownItem on:click={() => handleDensitySelect(99)}>100</DropdownItem>
   </Dropdown>
+  <p class="text-white italic text-sm pl-3 translate-y-5 xl:translate-y-20 xxl:translate-y-1">Total Energy = {totalEnergy} MeV</p>
 </div>
