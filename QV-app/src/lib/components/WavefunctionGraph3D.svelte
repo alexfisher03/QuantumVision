@@ -83,8 +83,6 @@
 		geometryStore.set(newGeometry);
 		}
 
-
-
 	onMount(async () => {
 		await tick();
 		window.dispatchEvent(new Event('resize'));

@@ -38,7 +38,7 @@
                 <WidgetPlaceholder />
             </div>
         {:else}
-        <h2 class="-translate-y-28">|ψ(x)|² : 3D Infinite Potential Well</h2>
+        <h2 class="-translate-y-24 xl:-translate-y-32 xxl:-translate-y-56 font-bold">|ψ(x)|² : 3D Infinite Potential Well</h2>
             <WavefunctionGraph3D/>
         {/if}
     </div>
