@@ -23,6 +23,7 @@
     // Arrays for extra fusion particles.
     let positrons: any[] = [];
     let neutrinos: any[] = [];
+    let electrons: any[] = [];  // for spawned electrons
     let gammaWaves: any[] = []; // will contain a single gamma wave
   
     // Array of simulation steps.
@@ -68,7 +69,7 @@
       return group;
     }
   
-    // Helper to create a positron (blue glowing sphere).
+    // Helper to create a positron (blue glowing sphere) that always launches in the +X direction.
     function createPositron() {
       const geo = new THREE.SphereGeometry(0.03, 16, 16);
       const mat = new THREE.MeshStandardMaterial({
@@ -79,11 +80,11 @@
         opacity: 0.9
       });
       const positron = new THREE.Mesh(geo, mat);
-      positron.userData.velocity = new Vector3(
-        (Math.random() - 0.5) * 0.02,
-        (Math.random() - 0.5) * 0.02,
-        (Math.random() - 0.5) * 0.02
-      );
+      // Fixed direction: along +X.
+      let direction = new Vector3(1, 0, 0);
+      // Reduced velocity.
+      positron.userData.velocity = direction.clone().multiplyScalar(0.005);
+      positron.userData.direction = direction.clone();
       return positron;
     }
   
@@ -104,6 +105,25 @@
         (Math.random() - 0.5) * 0.025
       );
       return neutrino;
+    }
+  
+    // Helper to create an electron that spawns far on the +X axis and moves toward the center.
+    // The electron spawns at (5, 0, 0) and moves leftward (–X direction) so that it converges with the positron.
+    function createElectron(direction: any) {
+      const geo = new THREE.SphereGeometry(0.03, 16, 16);
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0xadd8e6,  // light blue
+        emissive: 0xadd8e6,
+        emissiveIntensity: 2,
+        transparent: true,
+        opacity: 0.9
+      });
+      const electron = new THREE.Mesh(geo, mat);
+      // Spawn electron at (5,0,0) (far on +X)
+      electron.position.set(5, 0, 0);
+      // Set electron velocity to move toward the center (-X).
+      electron.userData.velocity = new Vector3(-0.035, 0, 0);
+      return electron;
     }
   
     // Helper to create a gamma wave: a single expanding yellow sphere.
@@ -127,6 +147,7 @@
       }
       positrons = [];
       neutrinos = [];
+      electrons = [];
       gammaWaves = [];
       simulationStarted = false;
       fusionStarted = false;
@@ -193,6 +214,7 @@
     }
   
     onMount(async () => {
+      // Initially, the simulation is paused until "Begin Simulation" is clicked.
       resetFusionSimulation();
       await tick();
       window.dispatchEvent(new Event('resize'));
@@ -219,7 +241,7 @@
       isVibrating = true;
     }
   
-    // In the animation loop, check if simulationTime exceeds fusionTriggerTime to trigger fusion.
+    // In the animation loop, check if simulationTime exceeds fusionTriggerTime to trigger fusion effects.
     function checkFusionTrigger() {
       if (fusionStarted && simulationTime >= fusionTriggerTime && !fusionEffectsSpawned) {
         fuseProtons();
@@ -227,7 +249,7 @@
         currentStepIndex = 3; // Energy Release step.
         // Spawn one positron.
         let positron = createPositron();
-        positron.position.set(0, 0.1, 0);
+        positron.position.set(0, 0, 0);
         sceneGroup.add(positron);
         positrons.push(positron);
         // Spawn one neutrino.
@@ -235,30 +257,48 @@
         neutrino.position.set(0.1, 0, 0);
         sceneGroup.add(neutrino);
         neutrinos.push(neutrino);
-        // Spawn a single gamma wave.
-        let gammaWave = createGammaWave();
-        gammaWave.position.set(0, 0, 0);
-        sceneGroup.add(gammaWave);
-        gammaWaves.push(gammaWave);
+        // Spawn one electron using the positron's stored direction.
+        let electron = createElectron(positron.userData.direction);
+        sceneGroup.add(electron);
+        electrons.push(electron);
         fusionEffectsSpawned = true;
+      }
+    }
+  
+    // In the animation loop, check for electron-positron collision.
+    function checkElectronPositronCollision() {
+      if (positrons.length > 0 && electrons.length > 0) {
+        let positron = positrons[0];
+        let electron = electrons[0];
+        if (positron.position.distanceTo(electron.position) < 0.05) {
+          sceneGroup.remove(positron);
+          sceneGroup.remove(electron);
+          positrons.splice(0, 1);
+          electrons.splice(0, 1);
+          // Spawn a single gamma wave at the collision point.
+          let gammaWave = createGammaWave();
+          gammaWave.position.copy(positron.position);
+          sceneGroup.add(gammaWave);
+          gammaWaves.push(gammaWave);
+        }
       }
     }
   
     // Animation loop: update simulation using simulationTime.
     function animateFrame() {
       const now = performance.now();
-      if (!paused) {
+      if (!paused && simulationStarted) {
         simulationTime += now - lastTime;
       }
       lastTime = now;
   
-      // Rotate targetsGroup and the entire sceneGroup slightly.
+      // Rotate targetsGroup and sceneGroup slightly.
       if (targetsGroup) {
         targetsGroup.rotation.y += 0.0001;
       }
       sceneGroup.rotation.y += 0.0001;
   
-      if (!paused) {
+      if (!paused && simulationStarted) {
         // Update current step based on simulationTime.
         if (simulationTime < pressureTriggerTime) {
           currentStepIndex = 0;
@@ -275,7 +315,10 @@
         // Check if it's time to trigger fusion effects.
         checkFusionTrigger();
   
-        if (simulationStarted && !fusedNucleus && proton1 && proton2) {
+        // Check for electron-positron collision.
+        checkElectronPositronCollision();
+  
+        if (!fusedNucleus && proton1 && proton2) {
           const center = new Vector3(0, 0, 0);
           [proton1, proton2].forEach(proton => {
             let toCenter = center.clone().sub(proton.position);
@@ -314,11 +357,19 @@
             neutrinos.splice(i, 1);
           }
         });
+        // Update electrons.
+        electrons.forEach((e, i) => {
+          e.position.add(e.userData.velocity);
+          if (e.position.length() > 5) {
+            sceneGroup.remove(e);
+            electrons.splice(i, 1);
+          }
+        });
         // Update gamma waves.
         gammaWaves.forEach((g, i) => {
-          g.scale.x += 0.01; // continuously expand
-          g.scale.y += 0.01;
-          g.scale.z += 0.01;
+          g.scale.x += 0.005;
+          g.scale.y += 0.005;
+          g.scale.z += 0.005;
           let elapsed = simulationTime - g.userData.startTime;
           g.material.opacity = Math.max(0.7 - elapsed / 8000, 0);
         });
