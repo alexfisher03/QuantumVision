@@ -68,18 +68,58 @@
     {/if}
     
 
-    <div class="flex flex-col items-center justify-center absolute right-10 top-1/2 transform -translate-y-1/2">
+    <div class="flex flex-col items-center justify-center absolute right-10 top-1/2 transform -translate-y-1/2 pt-36">
         {#if !showDescription}
-            <h2 class="text-2xl font-semibold pt-10 -translate-x-20 text-start">Nuclear Fission Simulation</h2>
-            <p class="text-base text-gray-300 mt-2 w-[460px]">Description will go here</p>
-            <div class="pt-3 -translate-x-40">
-                <button onclick={toggleDescription} class="bg-transparent border border-white flex flex-row justify-center items-center rounded-3xl py-3 px-5 hover:scale-105 hover:translate-y-1 hover:underline transform transition duration-300 ease-in-out group text-white text-sm">See Instructions</button>
-            </div>
-        {:else}
-            <button class="bg-transparent border border-white flex justify-center items-center rounded-3xl py-16 px-20 pointer-events-none">
-                <span onclick={toggleDescription} class="absolute right-10 -translate-y-10 translate-x-3 scale-90 hover:scale-110 transform transition ease-in-out duration-300 pointer-events-auto"><img src={x} alt="Close Simulation Instructions"/></span>
-                <p class="text-white">Instructions Here, Configure Once Simulation is Written</p>
+          <h2 class="text-2xl font-semibold pt-10 -translate-x-[85px] text-start">Nuclear Fission Simulation</h2>
+          <p class="text-base text-gray-300 mt-2 w-[460px]">
+            Watch a single fission event or an event which cascades into a chain reaction. The simulation shows an incoming neutron striking a fissile nucleus (U-235),
+            which upon reaction releases additional neutrons and generates an expanding energy wave.
+          </p>
+          <div class="pt-3 -translate-x-40">
+            <button onclick={toggleDescription} 
+                    class="bg-transparent border border-white flex flex-row justify-center items-center rounded-3xl py-3 px-5 hover:scale-105 hover:translate-y-1 hover:underline transition duration-300 ease-in-out group text-white text-sm">
+              See Instructions
             </button>
+          </div>
+        {:else}
+        <div class="flex justify-center -translate-x-16">
+          <div class="border border-white flex flex-col justify-start items-start rounded-3xl p-8 w-4/5 relative shadow-lg text-left space-y-4 mb-6">
+            <span onclick={toggleDescription} class="absolute top-4 right-4 scale-90 hover:scale-110 transition duration-300 cursor-pointer">
+              <img src={x} alt="Close Simulation Instructions" />
+            </span>
+      
+            <h3 class="text-lg font-semibold text-white">How to Run the Simulation</h3>
+            <p class="text-sm text-gray-300">
+              Click the <b>Fire Neutron</b> button to start a fission event. The simulation resets to show either a single nuclei or a new collection of uranium nuclei and launches an incoming neutron.
+            </p>
+      
+            <h3 class="text-lg font-semibold text-white">Understanding the Visualization</h3>
+            <p class="text-sm text-gray-300">
+              The 3D scene illustrates a nuclear fission process:
+            </p>
+            <ul class="list-disc pl-4 text-sm text-gray-400">
+              <li><b>Incoming Neutron:</b> A fast-moving particle that initiates the fission reaction.</li>
+              <li><b>Fissile Nuclei:</b> A collection of uranium nuclei; one is fixed at the center.</li>
+              <li><b>Fragments & Energy Wave:</b> When a nucleus splits, it emits fragments and an expanding wave representing released energy.</li>
+            </ul>
+            <p class="text-sm text-gray-300">
+              Additional neutrons produced during the split may trigger further fission events, forming a chain reaction.
+            </p>
+      
+            <h3 class="text-lg font-semibold text-white">Adjusting Uranium Density</h3>
+            <p class="text-sm text-gray-300">
+              Use the dropdown menu to select the density of uranium nuclei. Lower density results in fewer random nuclei (e.g. 40), while higher density (e.g. 80) simulates a more critical mass.
+            </p>
+      
+            <h3 class="text-lg font-semibold text-white">Navigation and Controls</h3>
+            <p class="text-sm text-gray-300">
+              Rotate, zoom, and pan the scene using your mouse or touch controls. The simulation pauses if you toggle the pause button, allowing you to study specific moments in the reaction.
+            </p>
+            <p class="text-sm text-gray-400 italic">
+              Experiment with different uranium densities and observe how the chain reaction evolves.
+            </p>
+          </div>
+        </div>
         {/if}
     </div>
 

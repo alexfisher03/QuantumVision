@@ -35,6 +35,9 @@
 	// Global paused state (declared only once)
 	let paused: boolean = false;
 
+	// total energy
+	let totalEnergy: number = 0;
+
 	// Helper to create the original nucleus (layered: core + halo)
 	function createNucleus() {
 		let group = new THREE.Group();
@@ -84,6 +87,9 @@
 
 	// Called when the "Fire Neutron" button is clicked.
 	function neutronBombardment() {
+		// reset total energy
+		totalEnergy = 0;
+
 		// Remove any existing incoming neutron and reset fission state.
 		if (neutron) {
 			neutronGroup.remove(neutron);
@@ -142,6 +148,9 @@
 
 	// Function to split the nucleus into fragments, spawn product neutrons, and create an energy wave.
 	function splitNucleus() {
+		// increment total energy
+		totalEnergy += 200;
+
 		nucleusGroup = null;
 		hasSplit = true;
 
@@ -301,7 +310,7 @@
 </script>
 
 <div>
-	<h2 class="-translate-y-24 xl:-translate-y-32 xxl:-translate-y-56">Singular Fission Reaction</h2>
+	<h2 class="-translate-y-24 xl:-translate-y-32 xxl:-translate-y-56 font-bold">Singular Fission Reaction</h2>
 	<SC.Canvas antialias background={new THREE.Color('#000000')} shadows>
 		<SC.Primitive object={cubeWireframe} />
 		{#if nucleusGroup}
@@ -338,4 +347,5 @@
 			</svg>
 		{/if}
 	</button>
+	<p class="text-white text-sm pl-3 translate-y-28 xl:translate-y-44 xxl:translate-y-20">Total Energy = {totalEnergy} MeV</p>
 </div>

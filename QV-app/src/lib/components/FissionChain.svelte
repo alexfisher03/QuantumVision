@@ -16,6 +16,7 @@
 
   // uranium density; default is 39 (least dense)
   let density: number = 39; // displayed as "Nuclei Density: 39"
+  let densityDisplay: number = density + 1;
 
   // scene groups to organize simulation objects
   let nucleiGroup: any; // group of unfissioned nuclei
@@ -36,6 +37,7 @@
   // handler for Flowbite Dropdown selection
   function handleDensitySelect(value: number) {
     density = value;
+	densityDisplay = density + 1;
     resetSimulation();
   }
 
@@ -320,7 +322,7 @@
 </script>
 
 <div>
-  <h2 class="-translate-y-24 xl:-translate-y-32 xxl:-translate-y-56">Fission Chain Reaction</h2>
+  <h2 class="-translate-y-24 xl:-translate-y-32 xxl:-translate-y-56 font-bold">Fission Chain Reaction</h2>
   <SC.Canvas antialias background={new THREE.Color('#000000')} shadows>
     <SC.Primitive object={cubeWireframe} />
     <!-- render unfissioned nuclei group -->
@@ -336,7 +338,7 @@
   </SC.Canvas>
   <!-- display current uranium density -->
   <div class="font-bold text-white text-sm mt-2 ml-3 translate-y-40 translate-x-64 xl:translate-x-[350px] xxl:translate-x-[350px] xl:translate-y-56 xxl:translate-y-36">
-    Nuclei Density: <span class="text-red-500 underline font-bold">{density}</span>
+    Nuclei Density: <span class="text-red-500 underline font-bold">{densityDisplay}</span>
   </div>
   <button 
     class="bg-transparent border border-white rounded-xl py-3 px-5 transform transition duration-300 ease-in-out text-white text-sm mr-3 mt-3 -translate-y-28 translate-x-64 xl:translate-x-[350px] xxl:translate-x-[350px] xl:-translate-y-36 xxl:-translate-y-60 hover:scale-105 hover:text-[#9f3edc] hover:border-[#9f3edc]"
@@ -363,8 +365,8 @@
     <ChevronDownOutline class="-rotate-90 group-hover:rotate-0" />
   </button>
   <Dropdown>
-    <DropdownItem on:click={() => handleDensitySelect(39)}>39</DropdownItem>
-    <DropdownItem on:click={() => handleDensitySelect(59)}>59</DropdownItem>
-    <DropdownItem on:click={() => handleDensitySelect(79)}>79</DropdownItem>
+    <DropdownItem on:click={() => handleDensitySelect(39)}>40</DropdownItem>
+    <DropdownItem on:click={() => handleDensitySelect(59)}>60</DropdownItem>
+    <DropdownItem on:click={() => handleDensitySelect(79)}>80</DropdownItem>
   </Dropdown>
 </div>
