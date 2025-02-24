@@ -347,5 +347,5 @@
 			</svg>
 		{/if}
 	</button>
-	<p class="text-white text-sm pl-3 translate-y-28 xl:translate-y-44 xxl:translate-y-20">Total Energy = {totalEnergy} MeV</p>
+	<p class="text-white italic text-sm pl-3 translate-y-28 xl:translate-y-44 xxl:translate-y-20">Total Energy = {totalEnergy} MeV</p>
 </div>

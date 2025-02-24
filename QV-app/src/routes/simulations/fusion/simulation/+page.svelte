@@ -6,6 +6,18 @@
 <script lang="ts">
     import arrowup from "$lib/vectors/transitionarrow_up.svg";
     import x from "$lib/vectors/x.svg";
+    import { onMount } from "svelte";
+    import { WidgetPlaceholder } from 'flowbite-svelte';
+
+    let FusionComponent: any = $state();
+    let loadingGraph: boolean = $state(true);
+
+    onMount(async () => {
+      const module = await import('$lib/components/Fusion.svelte');
+      FusionComponent = module.default;
+      
+      loadingGraph = false;
+    });
 
     let showDescription = $state(false);
 
@@ -19,7 +31,17 @@
         <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Nuclear Fusion</h1>
     </div>
 
-    <!-- SIMULATION GOES HERE -->
+    {#if !showDescription}
+    <div class={loadingGraph ? "flex flex-col justify-start" : "flex flex-col justify-start lg:w-[400px] lg:h-[300px] xl:w-[500px] xl:h-[400px] md:pt-16 xl:pt-24 xxl:pt-48 lg:translate-y-0 lg:-translate-x-18 xl:-translate-x-24 xxl:mt-24"}>
+        {#if loadingGraph}
+            <div class="-translate-y-12 lg:w-[400px] lg:h-[200px] xl:w-[300px] xl:h-[300px]">
+                <WidgetPlaceholder />
+            </div>
+        {:else}
+            <FusionComponent />
+        {/if}
+    </div>
+    {/if}
 
     
     <div class="flex flex-col items-center justify-center absolute right-10 top-1/2 transform -translate-y-1/2">
@@ -37,11 +59,13 @@
         {/if}
     </div>
 
-    <div class="flex justify-center">
-        <a href="/simulations/fusion" class="absolute bottom-4 transform pb-3">
-            <img src={arrowup} alt="Move Back To Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
-        </a>
-    </div>
+    {#if !showDescription}
+      <div class="flex justify-center">
+          <a href="/simulations/fusion" class="pt-40 bottom-4 transform pb-3">
+              <img src={arrowup} alt="Move Back To Fusion Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
+          </a>
+      </div>
+      {/if}
 </section>
 
 <style>

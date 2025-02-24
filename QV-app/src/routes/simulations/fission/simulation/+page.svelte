@@ -7,6 +7,9 @@
     import arrowup from "$lib/vectors/transitionarrow_up.svg";
     import x from "$lib/vectors/x.svg";
     import { onMount } from "svelte";
+    import { WidgetPlaceholder } from 'flowbite-svelte';
+
+    
     let FissionChain = $state();
     let FissionSingle = $state();
 
@@ -15,7 +18,6 @@
         showDescription = !showDescription;
     }
 
-    import { WidgetPlaceholder } from 'flowbite-svelte';
     let loadingGraph = $state(true);
     onMount(async () => {
       const module1 = await import('$lib/components/FissionChain.svelte');

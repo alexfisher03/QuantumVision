@@ -94,8 +94,8 @@
 
       {#if !showDescription}
       <div class="flex justify-center">
-          <a href="/simulations/twodimension" class="pt-40 bottom-4 transform pb-3">
-              <img src={arrowup} alt="Move Back To 2D Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
+          <a href="/simulations/threedimension" class="pt-40 bottom-4 transform pb-3">
+              <img src={arrowup} alt="Move Back To 3D Info Page" class="hover:-translate-y-2 transform transition ease-in-out duration-200"/>
           </a>
       </div>
       {/if}
