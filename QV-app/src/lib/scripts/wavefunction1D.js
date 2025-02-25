@@ -1,4 +1,8 @@
 /**
+ * Compute the 1D wavefunction for a particle in a box
+ * The wavefunction is given by
+ *   ψ(x,y) = (2/L) * sin(nπx/L)
+ * probability density is ψ²
  * 
  * @param {number} n - quantum number
  * @param {number} L - length of the box

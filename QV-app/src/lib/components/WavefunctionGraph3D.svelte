@@ -49,7 +49,7 @@
 			}
 			}
 		}
-		// determine min and max densities.
+		// determine min and max densities
 		const minD = Math.min(...densities);
 		const maxD = Math.max(...densities);
 
@@ -69,7 +69,9 @@
 				positions[i * 3 + 1],
 				positions[i * 3 + 2]
 			);
-			// map t to a color: low density (just above threshold) = darker; high density = brighter red
+			/* 
+			 * map t to a color: low density (just above threshold) = darker
+			 * high density = brighter red */
 			const color = new THREE.Color().setHSL(0.7 * (1 - t), 1, 0.5);
 			filteredColors.push(color.r, color.g, color.b);
 			}
@@ -89,7 +91,7 @@
 		updatePointCloud();
 	});
 
-	// subscribe to geometryStore updates 
+	// subscribe to geometryStore updates so that the point cloud can be updated when the user selects new quantum numbers
 	geometryStore.subscribe(value => {
 		if (value) {
 		pointCloud.geometry = value;

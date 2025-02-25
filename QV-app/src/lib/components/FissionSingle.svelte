@@ -3,13 +3,13 @@
 	import * as SC from 'svelte-cubed';
 	import { onMount, tick } from 'svelte';
 
-	// Fission state variables
+	//state variables
 	let fissionStarted: boolean = false;   // becomes true when the incoming neutron collides
 	let hasSplit: boolean = false;         // becomes true once the nucleus has split
 	let fissionStartTime: any = null;  // time when fissionStarted was set true
 	const splitDelay: number = 700;       // delay (ms) between collision and splitting
 
-	// Groups and objects for our simulation
+	//groups and objects
 	let nucleusGroup: any;            // original nucleus (layered)
 	let cubeWireframe: any;           // simulation boundary
 	let neutronGroup = new THREE.Group();  // group holding the incoming neutron
@@ -17,31 +17,30 @@
 	let productNeutronsGroup = new THREE.Group(); // group for product neutrons
 	let energyWave: any = null;       // energy visualization
 
-	// Reference to the current incoming neutron (if any)
+	//reference to the incoming neutron (if any)
 	let neutron: any = null;
-	// Duration for the incoming neutron to travel (ms)
+	//duration for the incoming neutron to travel from start to target position
 	const travelDuration: number = 3000;
-	// Starting and target positions for the incoming neutron
+	//start and target positions for the incoming neutron
 	const startPosition = new THREE.Vector3(3, 0, 0);
 	const targetPosition = new THREE.Vector3(0, 0, 0);
-	// For tracking the incoming neutron animation start time
+	//for tracking the incoming neutron animation start time
 	let animationStartTime: any = null;
 
-	// Speeds
+	//speeds
 	const baseSpeed: number = 0.005;
 	const fragmentSpeed: number = baseSpeed * 1.5;
 	const productNeutronSpeed: number = baseSpeed * 6;
 
-	// Global paused state (declared only once)
+	//global paused state (declared only once)
 	let paused: boolean = false;
 
-	// total energy
+	//total energy
 	let totalEnergy: number = 0;
 
-	// Helper to create the original nucleus (layered: core + halo)
+	//helper to create the original nucleus (layered: core + halo)
 	function createNucleus() {
 		let group = new THREE.Group();
-		// Core sphere
 		const coreGeometry = new THREE.SphereGeometry(0.15, 32, 32);
 		const coreMaterial = new THREE.MeshStandardMaterial({
 			color: 0xff0000,
@@ -51,7 +50,6 @@
 		const coreSphere = new THREE.Mesh(coreGeometry, coreMaterial);
 		coreSphere.position.set(0, 0, 0);
 		group.add(coreSphere);
-		// Halo sphere
 		const haloGeometry = new THREE.SphereGeometry(0.25, 32, 32);
 		const haloMaterial = new THREE.MeshStandardMaterial({
 			color: 0xff5555,
@@ -67,10 +65,10 @@
 	}
 
 	onMount(async () => {
-		// Create the original nucleus.
+		//create the original nucleus
 		nucleusGroup = createNucleus();
 
-		// Create the simulation boundary (a transparent cube).
+		//create the simulation boundary
 		const L = 3;
 		const cubeGeometry = new THREE.BoxGeometry(L, L, L);
 		const edges = new THREE.EdgesGeometry(cubeGeometry);
@@ -85,30 +83,29 @@
 		window.dispatchEvent(new Event('resize'));
 	});
 
-	// Called when the "Fire Neutron" button is clicked.
+	//called when the "Fire Neutron" button is clicked
 	function neutronBombardment() {
-		// reset total energy
 		totalEnergy = 0;
 
-		// Remove any existing incoming neutron and reset fission state.
+		//remove any existing incoming neutron and reset fission state
 		if (neutron) {
 			neutronGroup.remove(neutron);
 			neutron = null;
 			animationStartTime = null;
 		}
-		// Clear previous fission state: fragments, product neutrons, energyWave, etc
+		//clear previous fission state: fragments, product neutrons, energyWave, etc
 		fissionStarted = false;
 		hasSplit = false;
 		fissionStartTime = null;
 		fragmentsGroup = null;
 		energyWave = null;
 		productNeutronsGroup = new THREE.Group();
-		// If the original nucleus is missing (from a previous reaction), recreate it.
+		//if the original nucleus is missing (from a previous reaction), recreate it
 		if (!nucleusGroup) {
 			nucleusGroup = createNucleus();
 		}
 
-		// Create the incoming neutron: a small, glowing sphere.
+		//create the incoming neutron
 		const neutronGeometry = new THREE.SphereGeometry(0.025, 16, 16);
 		const neutronMaterial = new THREE.MeshStandardMaterial({
 			color: 0x808080,
@@ -123,7 +120,7 @@
 		animationStartTime = performance.now();
 	}
 
-	// Function to spawn product neutrons.
+	//function to spawn product neutrons
 	function spawnProductNeutrons() {
 		for (let i = 0; i < 3; i++) {
 			const pNeutronGeom = new THREE.SphereGeometry(0.02, 12, 12);
@@ -146,15 +143,15 @@
 		}
 	}
 
-	// Function to split the nucleus into fragments, spawn product neutrons, and create an energy wave.
+	//function to split the nucleus into fragments, spawn product neutrons, and create an energy wave
 	function splitNucleus() {
-		// increment total energy
+		//increment total energy
 		totalEnergy += 200;
 
 		nucleusGroup = null;
 		hasSplit = true;
 
-		// Create a group for the two fragments.
+		//create a group for the two fragments
 		fragmentsGroup = new THREE.Group();
 		function createFragment(color: any) {
 			let fragGroup = new THREE.Group();
@@ -187,34 +184,34 @@
 		frag2.position.set(0, 0, 0);
 		fragmentsGroup.add(frag1);
 		fragmentsGroup.add(frag2);
-		// Generate one random "base" direction.
+		//generate one random "base" direction
 		const baseDir = new THREE.Vector3(
 			Math.random() - 0.5,
 			Math.random() - 0.5,
 			Math.random() - 0.5
 		).normalize();
-		// Generate a small variation vector.
+		//generate a small variation vector
 		const variation = new THREE.Vector3(
 			(Math.random() - 0.5) * 0.2,
 			(Math.random() - 0.5) * 0.2,
 			(Math.random() - 0.5) * 0.2
 		);
-		// Fragment 1: exactly the base direction.
+		//frag1 exactly the base direction
 		const frag1Dir = baseDir.clone();
-		// Fragment 2: nearly opposite to base direction with slight variation.
+		//frag2 nearly opposite to base direction with slight variation
 		const frag2Dir = baseDir.clone().negate().add(variation).normalize();
 		frag1.userData.velocity = frag1Dir.multiplyScalar(fragmentSpeed);
 		frag2.userData.velocity = frag2Dir.multiplyScalar(fragmentSpeed);
 
-		// Spawn 3 product neutrons.
+		//spawn 3 product neutrons
 		spawnProductNeutrons();
 
-		// Create an energy wave that expands through the entire confinement cube.
+		//create an energy wave that expands through the entire confinement cube
 		const waveGeom = new THREE.SphereGeometry(0.1, 32, 32);
 		const waveMat = new THREE.MeshBasicMaterial({
-			color: 0xADD8E6, // light blue
+			color: 0xADD8E6,
 			transparent: true,
-			opacity: 0.25,   // almost transparent but solid
+			opacity: 0.25, 
 			side: THREE.DoubleSide
 		});
 		energyWave = new THREE.Mesh(waveGeom, waveMat);
@@ -222,17 +219,17 @@
 		energyWave.userData.startTime = performance.now();
 	}
 
-	// Toggle pause/resume.
+	//toggle pause/resume
 	function togglePause() {
 		paused = !paused;
 	}
 
-	// Called on every frame.
+	//called on every frame
 	function animateFrame() {
 		if (paused) return;
 		const now = performance.now();
 
-		// Animate the incoming neutron.
+		//animate the incoming neutron
 		if (neutron && animationStartTime !== null) {
 			const elapsed = now - animationStartTime;
 			const t = Math.min(elapsed / travelDuration, 1);
@@ -246,7 +243,7 @@
 			}
 		}
 
-		// Animate the original nucleus (if present).
+		//animate the original nucleus (if present)
 		if (nucleusGroup) {
 			nucleusGroup.rotation.y += 0.001;
 			if (fissionStarted) {
@@ -260,16 +257,16 @@
 			}
 		}
 
-		// After fission starts, if enough time has passed and we haven't split yet, split the nucleus.
+		//after fission starts, if enough time has passed and we haven't split yet, split the nucleus
 		if (fissionStarted && !hasSplit && (now - fissionStartTime) > splitDelay) {
 			splitNucleus();
 		}
 
-		// Animate fission fragments.
+		//animate fission fragments
 		if (fragmentsGroup) {
 			fragmentsGroup.children.forEach((frag: any) => {
 				frag.position.add(frag.userData.velocity);
-				// Bounce off boundaries (cube side 3, boundaries at ±1.5).
+				//bounce off boundaries
 				['x', 'y', 'z'].forEach(axis => {
 					if (frag.position[axis] > 1.5 || frag.position[axis] < -1.5) {
 						frag.userData.velocity[axis] *= -1;
@@ -281,7 +278,7 @@
 			});
 		}
 
-		// Animate product neutrons.
+		//animate product neutrons
 		productNeutronsGroup.children.forEach((pNeutron: any) => {
 			pNeutron.position.add(pNeutron.userData.velocity);
 			['x', 'y', 'z'].forEach(axis => {
@@ -292,7 +289,7 @@
 			});
 		});
 
-		// Animate the energy wave.
+		//animate the energy wave
 		if (energyWave) {
 			const waveElapsed = now - energyWave.userData.startTime;
 			const scale = 3 + waveElapsed / 100;
@@ -301,7 +298,7 @@
 		}
 	}
 
-	// Custom animation loop.
+	//custom animation loop
 	function loop() {
 		animateFrame();
 		requestAnimationFrame(loop);

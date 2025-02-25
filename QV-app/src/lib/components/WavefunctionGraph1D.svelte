@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { writable } from "svelte/store";
     import '@carbon/charts-svelte/styles.css';
     import { LineChart, ScaleTypes } from "@carbon/charts-svelte";
@@ -33,11 +33,7 @@
         
     };
 
-    /**
-     * Sets the selected energy level.
-     * @param {number} level - The selected energy level.
-    */
-    function selectEnergyLevel(level) {
+    function selectEnergyLevel(level: number) {
         selectedEnergyLevel.set(level);
     }
 </script>
