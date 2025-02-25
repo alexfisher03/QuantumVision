@@ -12,40 +12,49 @@
     let cubeWireframe: any;
     let proton1: any;
     let proton2: any;
-    let fusedNucleus: any = null; // will store the fused object
+    let fusedNucleus: any = null; // will store the fused deuteron
+    let helium3: any = null;      // will store the helium-3 nucleus
+    let extraProton: any = null;   // the extra proton for deuteron reaction
     let pressureArrows = new THREE.Group();
   
     let paused: boolean = false;
     let simulationStarted: boolean = false;
     let fusionStarted: boolean = false; // ensures fusion process starts only once
     let fusionEffectsSpawned: boolean = false; // ensures extra effects spawn only once
+    let extraFusionTriggered: boolean = false; // ensures deuteron-extra proton fusion triggers only once
   
     // Arrays for extra fusion particles.
     let positrons: any[] = [];
     let neutrinos: any[] = [];
     let electrons: any[] = [];  // for spawned electrons
-    let gammaWaves: any[] = []; // will contain a single gamma wave
+    let gammaWaves: any[] = []; // for gamma wave objects
   
     // Array of simulation steps.
     const steps = [
-      "Step 1 - Initial Protons",
+      "Step 1 - Initial Protons: Two protons are present",
       "Step 2 - Pressure Field: External forces draw the protons inward",
       "Step 3 - Fusion Reaction: Protons overcome Coulomb repulsion and fuse",
-      "Step 4 - Energy Release: Photons, positron, neutrino, and gamma emission"
+      "Step 4 - Energy Release: Produces a deuteron, emits a positron and neutrino; the positron annihilates with an electron to yield two gamma rays",
+      "Step 5 - Deuteron Reaction: The deuteron fuses with another nearby proton",
+      "Step 6 - Energy Release: Produces helium-3, emitting an additional gamma photon",
+      "Step 7 - Helium-3 Reaction: Two helium-3 nuclei fuse, one from the last reaction and one from another reaction nearby",
+      "Step 8 - Helium-4 Formation: Produces helium-4 and releases two protons and additional energy. These new protons allow the cycle to continue..."
     ];
     let currentStepIndex: number = 0;
   
     // Timing variables.
     let simulationTime = 0;
     let lastTime = performance.now();
-    // Trigger times (in ms) relative to simulationTime.
     const pressureTriggerTime = 2000;    // Until 2000ms: Step 1.
     const fusionStartTime = 4000;        // 2000ms to 4000ms: Step 2.
     const fusionTriggerTime = 11000;     // 4000ms to 11000ms: Step 3; fusion triggers at 11000ms → then Step 4.
+    const deuteronReactionTriggerTime = 13000;  // After 13000ms, spawn extra proton (Step 5).
+    const helium3FusionTriggerTime = 17000;     // After 17000ms, fuse deuteron + extra proton → helium-3.
   
     let isVibrating: boolean = false;
+    let isVibratingExtra: boolean = false; // for deuteron & extra proton vibration
   
-    // Helper to create a nucleus (core + halo) for the fusion outcome.
+    // Helper to create a nucleus (core + halo); used for fused objects.
     function createNucleus() {
       let group = new THREE.Group();
       const coreGeometry = new THREE.SphereGeometry(0.05, 32, 32);
@@ -69,7 +78,84 @@
       return group;
     }
   
-    // Helper to create a positron (blue glowing sphere) that always launches in the +X direction.
+    // Helper to create a deuteron.
+    function createDeuteron() {
+      let group = new THREE.Group();
+      // Create red sphere.
+      const redGeo = new THREE.SphereGeometry(0.03, 16, 16);
+      const redMat = new THREE.MeshStandardMaterial({
+        color: 0xff0000,
+        roughness: 0.8,
+        metalness: 0.2
+      });
+      const redSphere = new THREE.Mesh(redGeo, redMat);
+      redSphere.position.set(-0.015, 0, 0);
+      // Create grey sphere.
+      const greyGeo = new THREE.SphereGeometry(0.03, 16, 16);
+      const greyMat = new THREE.MeshStandardMaterial({
+        color: 0x808080,
+        roughness: 0.8,
+        metalness: 0.2
+      });
+      const greySphere = new THREE.Mesh(greyGeo, greyMat);
+      greySphere.position.set(0.015, 0, 0);
+      group.add(redSphere);
+      group.add(greySphere);
+      // Create a surrounding shell.
+      const shellGeo = new THREE.SphereGeometry(0.06, 32, 32);
+      const shellMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        opacity: 0.2,
+        transparent: true,
+        roughness: 1.0,
+        metalness: 0.3
+      });
+      const shell = new THREE.Mesh(shellGeo, shellMat);
+      group.add(shell);
+      return group;
+    }
+  
+    // Helper to create a helium-3 nucleus.
+    function createHelium3() {
+      let group = new THREE.Group();
+      // Two red spheres (protons).
+      const redGeo = new THREE.SphereGeometry(0.03, 16, 16);
+      const redMat = new THREE.MeshStandardMaterial({
+        color: 0xff0000,
+        roughness: 0.8,
+        metalness: 0.2
+      });
+      const protonA = new THREE.Mesh(redGeo, redMat);
+      const protonB = new THREE.Mesh(redGeo, redMat);
+      protonA.position.set(-0.02, 0, 0);
+      protonB.position.set(0.02, 0, 0);
+      // One grey sphere (neutron).
+      const greyGeo = new THREE.SphereGeometry(0.03, 16, 16);
+      const greyMat = new THREE.MeshStandardMaterial({
+        color: 0x808080,
+        roughness: 0.8,
+        metalness: 0.2
+      });
+      const neutron = new THREE.Mesh(greyGeo, greyMat);
+      neutron.position.set(0, 0.03, 0);
+      group.add(protonA);
+      group.add(protonB);
+      group.add(neutron);
+      // Surrounding shell.
+      const shellGeo = new THREE.SphereGeometry(0.07, 32, 32);
+      const shellMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        opacity: 0.2,
+        transparent: true,
+        roughness: 1.0,
+        metalness: 0.3
+      });
+      const shell = new THREE.Mesh(shellGeo, shellMat);
+      group.add(shell);
+      return group;
+    }
+  
+    // Helper to create a positron (blue glowing sphere) that always launches in +X.
     function createPositron() {
       const geo = new THREE.SphereGeometry(0.03, 16, 16);
       const mat = new THREE.MeshStandardMaterial({
@@ -80,9 +166,7 @@
         opacity: 0.9
       });
       const positron = new THREE.Mesh(geo, mat);
-      // Fixed direction: along +X.
       let direction = new Vector3(1, 0, 0);
-      // Reduced velocity.
       positron.userData.velocity = direction.clone().multiplyScalar(0.005);
       positron.userData.direction = direction.clone();
       return positron;
@@ -107,37 +191,56 @@
       return neutrino;
     }
   
-    // Helper to create an electron that spawns far on the +X axis and moves toward the center.
-    // The electron spawns at (5, 0, 0) and moves leftward (–X direction) so that it converges with the positron.
+    // Helper to create an electron. (Do not change this function)
     function createElectron(direction: any) {
       const geo = new THREE.SphereGeometry(0.03, 16, 16);
       const mat = new THREE.MeshStandardMaterial({
-        color: 0xadd8e6,  // light blue
+        color: 0xadd8e6,
         emissive: 0xadd8e6,
         emissiveIntensity: 2,
         transparent: true,
         opacity: 0.9
       });
       const electron = new THREE.Mesh(geo, mat);
-      // Spawn electron at (5,0,0) (far on +X)
-      electron.position.set(5, 0, 0);
-      // Set electron velocity to move toward the center (-X).
-      electron.userData.velocity = new Vector3(-0.035, 0, 0);
+      electron.position.set(2, 0, 0);
+      electron.userData.velocity = new Vector3(-0.005, 0, 0);
       return electron;
     }
   
-    // Helper to create a gamma wave: a single expanding yellow sphere.
+    // NEW: Helper to create a 1D sinusoidal gamma wave.
+    // This creates a line representing a gamma ray that travels in a random direction.
+    // In this version, we spawn TWO such waves.
     function createGammaWave() {
-      const geo = new THREE.SphereGeometry(0.1, 32, 32);
-      const mat = new THREE.MeshBasicMaterial({
+      const points = [];
+      const segments = 50;
+      const length = 2;
+      const amplitude = 0.1;
+      const frequency = 20;
+      for (let i = 0; i <= segments; i++) {
+        const x = (i / segments) * length;
+        const y = amplitude * Math.sin(frequency * x);
+        points.push(new Vector3(x, y, 0));
+      }
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      const material = new THREE.LineBasicMaterial({
         color: 0xffff00,
         transparent: true,
-        opacity: 0.6,
-        side: THREE.DoubleSide
+        opacity: 0.8
       });
-      const gammaWave = new THREE.Mesh(geo, mat);
-      gammaWave.userData.startTime = simulationTime;
-      return gammaWave;
+      const line = new THREE.Line(geometry, material);
+      // Rotate the line to a random orientation.
+      line.rotation.x = Math.random() * Math.PI * 2;
+      line.rotation.y = Math.random() * Math.PI * 2;
+      line.rotation.z = Math.random() * Math.PI * 2;
+      // Give the gamma wave a velocity so it travels.
+      let randomDir = new Vector3(
+        Math.random() - 0.5,
+        Math.random() - 0.5,
+        Math.random() - 0.5
+      ).normalize().multiplyScalar(0.002);
+      line.userData.velocity = randomDir;
+      line.userData.startTime = simulationTime;
+      return line;
     }
   
     // Reset the entire fusion simulation.
@@ -152,8 +255,12 @@
       simulationStarted = false;
       fusionStarted = false;
       fusionEffectsSpawned = false;
+      extraFusionTriggered = false;
       fusedNucleus = null;
+      helium3 = null;
+      extraProton = null;
       isVibrating = false;
+      isVibratingExtra = false;
       currentStepIndex = 0;
       simulationTime = 0;
       lastTime = performance.now();
@@ -220,25 +327,53 @@
       window.dispatchEvent(new Event('resize'));
     });
   
-    // Function to fuse the two protons into a single fused nucleus.
+    // Function to fuse the two protons into a deuteron.
     function fuseProtons() {
-      fusedNucleus = createNucleus();
+      fusedNucleus = createDeuteron();
       fusedNucleus.scale.set(1.2, 1.2, 1.2);
-      fusedNucleus.children.forEach(child => {
-        child.material.color.set(0x6082B6);
-      });
       sceneGroup.remove(targetsGroup);
       proton1 = null;
       proton2 = null;
       sceneGroup.add(fusedNucleus);
     }
   
-    // Function to start fusion: update step and initiate vibration.
+    // Function to start fusion (Step 3).
     function startFusion() {
       if (fusionStarted) return;
       fusionStarted = true;
-      currentStepIndex = 2; // Fusion Reaction step.
+      currentStepIndex = 2;
       isVibrating = true;
+    }
+  
+    // Function to spawn an extra proton for the deuteron reaction (Step 5).
+    function spawnExtraProton() {
+      const protonGeometry = new THREE.SphereGeometry(0.025, 16, 16);
+      const protonMaterial = new THREE.MeshStandardMaterial({
+        color: 0xff0000,
+        emissive: 0xff5555,
+        emissiveIntensity: 1,
+        roughness: 0.8,
+        metalness: 0.2
+      });
+      extraProton = new THREE.Mesh(protonGeometry, protonMaterial);
+      // Spawn the extra proton off-screen along +X.
+      extraProton.position.set(3, 0, 0);
+      sceneGroup.add(extraProton);
+    }
+  
+    // Function to fuse the deuteron with the extra proton to form helium-3 (Step 6).
+    function fuseDeuteronWithProton() {
+      sceneGroup.remove(fusedNucleus);
+      sceneGroup.remove(extraProton);
+      helium3 = createHelium3();
+      helium3.scale.set(1.2, 1.2, 1.2);
+      sceneGroup.add(helium3);
+      currentStepIndex = 5;
+      // Spawn one additional gamma wave at the helium-3 location.
+      let gammaWave = createGammaWave();
+      gammaWave.position.copy(helium3.position);
+      sceneGroup.add(gammaWave);
+      gammaWaves.push(gammaWave);
     }
   
     // In the animation loop, check if simulationTime exceeds fusionTriggerTime to trigger fusion effects.
@@ -246,7 +381,7 @@
       if (fusionStarted && simulationTime >= fusionTriggerTime && !fusionEffectsSpawned) {
         fuseProtons();
         isVibrating = false;
-        currentStepIndex = 3; // Energy Release step.
+        currentStepIndex = 3;
         // Spawn one positron.
         let positron = createPositron();
         positron.position.set(0, 0, 0);
@@ -275,11 +410,51 @@
           sceneGroup.remove(electron);
           positrons.splice(0, 1);
           electrons.splice(0, 1);
-          // Spawn a single gamma wave at the collision point.
-          let gammaWave = createGammaWave();
-          gammaWave.position.copy(positron.position);
-          sceneGroup.add(gammaWave);
-          gammaWaves.push(gammaWave);
+          // Spawn TWO gamma waves at the collision point.
+          let gammaWave1 = createGammaWave();
+          gammaWave1.position.copy(positron.position);
+          gammaWave1.rotation.z = Math.PI / 4;
+          sceneGroup.add(gammaWave1);
+          gammaWaves.push(gammaWave1);
+          let gammaWave2 = createGammaWave();
+          gammaWave2.position.copy(positron.position);
+          gammaWave2.rotation.z = -Math.PI / 4;
+          sceneGroup.add(gammaWave2);
+          gammaWaves.push(gammaWave2);
+          // After gamma emission, schedule Step 5: spawn an extra proton.
+          setTimeout(() => {
+            currentStepIndex = 4;
+            if (!extraProton) {
+              spawnExtraProton();
+            }
+          }, 2000);
+        }
+      }
+    }
+  
+    // In the animation loop, update the extra proton for Step 5.
+    function updateExtraProton() {
+      if (simulationTime >= deuteronReactionTriggerTime && extraProton && fusedNucleus) {
+        const center = fusedNucleus.position.clone();
+        let distance = extraProton.position.distanceTo(center);
+        // Differential acceleration: weaker overall pull with a lower base factor.
+        let accelFactor = 0.001 + (0.002 / distance);
+        let toCenter = center.clone().sub(extraProton.position);
+        // Create a helical path: add a rotating offset.
+        const helixAxis = new Vector3(0, 1, 0); // Y-axis
+        let helixOffset = toCenter.clone().cross(helixAxis).normalize().multiplyScalar(0.02);
+        // Also add a small Z offset to break the flatness.
+        let zOffset = new Vector3(0, 0, 0.001 * Math.sin(simulationTime * 0.01));
+        extraProton.position.add(toCenter.multiplyScalar(accelFactor)).add(helixOffset).add(zOffset);
+        // If extraProton nears fusedNucleus, trigger rapid vibration for both.
+        if (extraProton.position.distanceTo(fusedNucleus.position) < 0.4 && !extraFusionTriggered) {
+          extraFusionTriggered = true;
+          isVibrating = true;
+          // Delay extra fusion for cinematic tension.
+          setTimeout(() => {
+            fuseDeuteronWithProton();
+            isVibrating = false;
+          }, 4000);
         }
       }
     }
@@ -314,9 +489,10 @@
   
         // Check if it's time to trigger fusion effects.
         checkFusionTrigger();
-  
         // Check for electron-positron collision.
         checkElectronPositronCollision();
+        // Update extra proton movement for Step 5.
+        updateExtraProton();
   
         if (!fusedNucleus && proton1 && proton2) {
           const center = new Vector3(0, 0, 0);
@@ -360,6 +536,9 @@
         // Update electrons.
         electrons.forEach((e, i) => {
           e.position.add(e.userData.velocity);
+          if (e.position.x <= 1) {
+            e.userData.velocity.set(0, 0, 0);
+          }
           if (e.position.length() > 5) {
             sceneGroup.remove(e);
             electrons.splice(i, 1);
@@ -367,6 +546,7 @@
         });
         // Update gamma waves.
         gammaWaves.forEach((g, i) => {
+          g.position.add(g.userData.velocity);
           g.scale.x += 0.005;
           g.scale.y += 0.005;
           g.scale.z += 0.005;
