@@ -6,7 +6,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://https://github.com/alexfisher03/QuantumVision">
+  <a href="https://github.com/alexfisher03/QuantumVision">
     <img src="QV-app/src/lib/images/doclogo.png" alt="Logo">
   </a>
 
@@ -18,7 +18,7 @@
     <br />
     <a href="">View Project</a>
     &middot;
-    <a href="https://https://github.com/alexfisher03/QuantumVision/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/alexfisher03/QuantumVision/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
   </p>
 </div>
 
@@ -84,11 +84,11 @@ During my time at the University of Florida, I took an introductory course in Mo
 
 ## Gallery
 <div align="center">
-  <img width="250" height="250" src="QV-app/src/lib/images/1D-preview.png" alt="1D Preview">
-  <img width="250" height="250" src="QV-app/src/lib/images/2D-preview.png" alt="2D Preview">
-  <img width="250" height="250" src="QV-app/src/lib/images/3D-preview.png" alt="3D Preview">
-  <img width="250" height="250" src="QV-app/src/lib/images/Fission-preview.png" alt="Fission Preview">
-  <img width="250" height="250" src="QV-app/src/lib/images/Fusion-preview.png" alt="Fusion Preview">
+  <img width="250" height="250" src="QV-app/src/lib/images/1D-preview.PNG" alt="1D Preview">
+  <img width="250" height="250" src="QV-app/src/lib/images/2D-preview.PNG" alt="2D Preview">
+  <img width="250" height="250" src="QV-app/src/lib/images/3D-preview.PNG" alt="3D Preview">
+  <img width="250" height="250" src="QV-app/src/lib/images/Fission-preview.PNG" alt="Fission Preview">
+  <img width="250" height="250" src="QV-app/src/lib/images/Fusion-preview.PNG" alt="Fusion Preview">
 </div>
 
 <!-- LICENSE -->
