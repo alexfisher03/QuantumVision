@@ -38,13 +38,25 @@
       "Step 1 - Initial Protons: Two protons are present",
       "Step 2 - Pressure Field: External forces draw the protons inward (i.e. the Sun's gravity)",
       "Step 3 - Fusion Reaction: Protons overcome Coulomb repulsion and fuse",
-      "Step 4 - Energy Release: Produces a deuteron, emits a positron and neutrino; the positron annihilates with an electron to yield two gamma rays",
+      "Step 4 - Energy Release: Produces a deuteron, emits a positron and neutrino. Positron & electron annihilate to yield two gamma rays",
       "Step 5 - Deuteron Reaction: The deuteron fuses with another nearby proton",
       "Step 6 - Energy Release: Produces helium-3, emitting an additional gamma photon",
       "Step 7 - Helium-3 Reaction: Two helium-3 nuclei fuse, one from the last reaction and one from another reaction nearby",
       "Step 8 - Helium-4 Formation: Produces helium-4 and releases two protons and additional energy. These new protons allow the cycle to continue..."
     ];
     let currentStepIndex: number = 0;
+
+    const reactionTimes = [
+        "Static",
+        "Millions of Years Worth Of Pressure",
+        "~9 Billion Years (rate‑limiting)",
+        "Almost Instantaneously (<10⁻¹⁸ s)",
+        "~1 Second",
+        "~1 Second",
+        "~1 Second",
+        "almost instantaneously (<10⁻⁹ s)"
+    ]
+    let currentReactionTimeIndex: number = 0;
   
     // Timing variables.
     let simulationTime = 0;
@@ -263,6 +275,7 @@
       isVibrating = false;
       isVibratingExtra = false;
       currentStepIndex = 0;
+      currentReactionTimeIndex = 0;
       simulationTime = 0;
       lastTime = performance.now();
   
@@ -372,6 +385,7 @@
       helium3.scale.set(1.2, 1.2, 1.2);
       sceneGroup.add(helium3);
       currentStepIndex = 5;
+      currentReactionTimeIndex = 5;
       // Spawn one gamma wave at the helium-3 location.
       let gammaWave = createGammaWave();
       gammaWave.position.copy(helium3.position);
@@ -380,6 +394,7 @@
       // After helium3 is formed, schedule extra helium3 spawn (for Step 7).
       setTimeout(() => {
         currentStepIndex = 6; // Step 7.
+        currentReactionTimeIndex = 6;
         if (!extraHelium3) {
           spawnExtraHelium3();
         }
@@ -402,6 +417,7 @@
       helium4.scale.set(1.3, 1.3, 1.3);
       sceneGroup.add(helium4);
       currentStepIndex = 7;
+      currentReactionTimeIndex = 7;
       // Spawn a big energy ripple to visualize energy release.
       let energyRipple = createEnergyRipple();
       energyRipple.position.copy(helium4.position);
@@ -496,6 +512,7 @@
         fuseProtons();
         isVibrating = false;
         currentStepIndex = 3; // Energy Release step.
+        currentReactionTimeIndex = 3;
         // Spawn one positron.
         let positron = createPositron();
         positron.position.set(0, 0, 0);
@@ -538,6 +555,7 @@
           // After gamma emission, schedule Step 5: spawn an extra proton.
           setTimeout(() => {
             currentStepIndex = 4; // Step 5: Deuteron Reaction.
+            currentReactionTimeIndex = 4;
             if (!extraProton) {
               spawnExtraProton();
             }
@@ -615,10 +633,13 @@
         // Update current step based on simulationTime.
         if (simulationTime < pressureTriggerTime) {
           currentStepIndex = 0;
+          currentReactionTimeIndex = 0;
         } else if (simulationTime >= pressureTriggerTime && simulationTime < fusionStartTime) {
           currentStepIndex = 1;
+          currentReactionTimeIndex = 1;
         } else if (simulationTime >= fusionStartTime && simulationTime < fusionTriggerTime) {
           currentStepIndex = 2;
+          currentReactionTimeIndex = 2;
           isVibrating = true;
           if (!fusionStarted) {
             startFusion();
@@ -745,8 +766,9 @@
     </button>
     <p class="text-white italic text-sm pl-3 translate-y-28 xl:translate-y-44 xxl:translate-y-20">Total Energy = <span class="text-purple-500">{totalEnergy}</span> MeV</p>
     <!-- Dynamic step description -->
-    <p class="text-white italic text-sm p-3 translate-y-40 xl:translate-y-56 xxl:translate-y-32 bg-opacity-30 bg-white rounded-xl">
+    <p class="text-white italic text-sm p-2 translate-y-40 xl:translate-y-56 xxl:translate-y-32 bg-opacity-30 bg-white rounded-xl fixed">
       {steps[currentStepIndex]}
     </p>
+    <p class="text-white text-sm font-bold p-2 translate-y-60 xl:translate-y-72 xxl:translate-y-48 bg-opacity-30 bg-white rounded-xl fixed">Approximate Reaction Time = <span class="text-red-500 italic">{reactionTimes[currentReactionTimeIndex]}</span></p>
   </div>
   
