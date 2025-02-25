@@ -42,7 +42,7 @@
                 <p class="body-text pt-6">The net result of this fusion process is the transformation of four protons into one helium nucleus, releasing energy in the form of light and heat, along with two positrons and two neutrinos:</p>
                 <img src={eq2} alt="Equation 4" class="scale-[125%] translate-y-3 pt-4 pb-4"/>
             </div>
-            <div class="-translate-x-16 pt-6">
+            <div class="-translate-x-16 pt-6 scale-90 xl:scale-95 xxl:scale-100">
                 <img src={fusionfigure} alt="Fusion Figure" class="scale-150 translate-y-24"/>
             </div>
         </div> 

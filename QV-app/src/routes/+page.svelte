@@ -29,7 +29,7 @@
 
 <section class="flex flex-col justify-center items-center absolute top-1/3">
 	<h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl gradient-text animate-gradient text-transparent">Quantum Vision</h1>
-	<p class="text-base sm:text-2xl body-text pt-8 w-2/3 text-center">Explore modern physics and quantum mechanics interactively through this Python-based app</p>
+	<p class="text-base sm:text-2xl body-text pt-8 w-2/3 text-center">Explore modern physics and quantum mechanics interactively through this Svelte-based app</p>
 
 	<div class="flex flex-col sm:flex-row justify-center pt-8 space-x-6 sm:translate-x-14">
 		<a href="/simulations" class={isMobile ? "flex justify-center" : ""}>

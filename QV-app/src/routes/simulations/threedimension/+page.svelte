@@ -43,7 +43,7 @@
 
         <!-- column 2content -->
         <div class="flex flex-col items-center">
-            <img src={figure3} alt="3D Figure" class="scale-[105%] -translate-x-7 translate-y-10"/>
+            <img src={figure3} alt="3D Figure" class="scale-90 -translate-x-16 xl:-translate-x-7 translate-y-10 xxl:scale-[105%]"/>
             <div>
                 <h2 class="text-xl font-semibold pt-10 -translate-x-10 translate-y-16">Energy Levels in 3D</h2>
             </div>
