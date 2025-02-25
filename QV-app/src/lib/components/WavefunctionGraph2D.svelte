@@ -94,7 +94,6 @@
 		shadows
 		fog={new THREE.FogExp2('black', 0.1)}
 	>
-		<!-- Grid plane group: a horizontal plane and grid helper -->
 		<SC.Group>
 			<SC.Mesh
 				geometry={new THREE.PlaneGeometry(50, 50)}
@@ -112,8 +111,6 @@
         <SC.Primitive object={arrowX} />
         <SC.Primitive object={arrowY} />
         <SC.Primitive object={arrowZ} />
-		
-		<!-- Wavefunction surface: its base (x and z) is flush with the grid, and height is along Y. -->
 		<SC.Mesh
 			geometry={$geometryStore}
 			material={new THREE.MeshStandardMaterial({
@@ -123,8 +120,6 @@
 			})}
 			receiveShadow
 		/>
-		
-		<!-- camera position to capture angled view -->
 		<SC.PerspectiveCamera position={[1, 1, 1.5]} />
 		<SC.OrbitControls enableZoom={false} maxPolarAngle={Math.PI * 0.45} />
 		<SC.AmbientLight intensity={0.5} />

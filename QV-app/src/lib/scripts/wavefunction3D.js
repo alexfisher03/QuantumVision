@@ -14,9 +14,8 @@
  * @returns {number}
  */
 export function computeWaveFunction3D(n_x, n_y, n_z, x, y, z, L = 1) {
-    const psi = Math.sin(n_x * Math.PI * x / L) *
-                Math.sin(n_y * Math.PI * y / L) *
-                Math.sin(n_z * Math.PI * z / L);
-    return psi * psi;
-  }
-  
+  const psi = Math.sin(n_x * Math.PI * x / L) *
+              Math.sin(n_y * Math.PI * y / L) *
+              Math.sin(n_z * Math.PI * z / L);
+  return psi * psi;
+}
