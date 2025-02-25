@@ -369,11 +369,11 @@
     Select Uranium Density
     <ChevronDownOutline class="-rotate-90 group-hover:rotate-0" />
   </button>
-  <Dropdown>
+  <Dropdown placement="bottom">
     <DropdownItem on:click={() => handleDensitySelect(39)}>40</DropdownItem>
     <DropdownItem on:click={() => handleDensitySelect(59)}>60</DropdownItem>
     <DropdownItem on:click={() => handleDensitySelect(79)}>80</DropdownItem>
 	<DropdownItem on:click={() => handleDensitySelect(99)}>100</DropdownItem>
   </Dropdown>
-  <p class="text-white italic text-sm pl-3 translate-y-5 xl:translate-y-20 xxl:translate-y-1">Total Energy = {totalEnergy} MeV</p>
+  <p class="text-white italic text-sm pl-3 translate-y-5 xl:translate-y-20 xxl:translate-y-1">Total Energy = <span class="text-purple-500">{totalEnergy}</span> MeV</p>
 </div>

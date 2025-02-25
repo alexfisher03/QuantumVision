@@ -46,7 +46,7 @@
     
     <div class="flex flex-col items-center justify-center absolute right-10 top-1/2 transform -translate-y-1/2">
         {#if !showDescription}
-            <h2 class="text-2xl font-semibold pt-10 -translate-x-20">Nuclear Fusion Simulation</h2>
+            <h2 class="text-2xl font-semibold pt-10 -translate-x-[85px] text-start">Nuclear Fusion Simulation</h2>
             <p class="text-base text-gray-300 mt-2 w-[460px]">Description will go here</p>
             <div class="pt-3 -translate-x-40">
                 <button onclick={toggleDescription} class="bg-transparent border border-white flex flex-row justify-center items-center rounded-3xl py-3 px-5 hover:scale-105 hover:translate-y-1 hover:underline transform transition duration-300 ease-in-out group text-white text-sm">See Instructions</button>
