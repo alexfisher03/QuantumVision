@@ -85,7 +85,7 @@
           </div>
         {:else}
         <div class="flex justify-center translate-x-3">
-          <div class="border border-white flex flex-col justify-start items-start rounded-3xl p-8 w-4/5 relative shadow-lg text-left space-y-4 mb-6 translate-y-12 xl:translate-y-0">
+          <div class="border border-white flex flex-col justify-start items-start rounded-3xl p-8 w-4/5 relative shadow-lg text-left space-y-4 mb-6 translate-y-24 xl:translate-y-0">
             <span onclick={toggleDescription} class="absolute top-4 right-4 scale-90 hover:scale-110 transition duration-300 cursor-pointer">
               <img src={x} alt="Close Simulation Instructions" />
             </span>

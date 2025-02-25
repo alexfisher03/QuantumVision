@@ -38,7 +38,7 @@
 
         <!-- column 2content -->
         <div class="flex flex-col items-center">
-            <img src={figure2} alt="2D Figure" class="scale-[105%] -translate-x-7 translate-y-10"/>
+            <img src={figure2} alt="2D Figure" class="scale-95 -translate-x-12 xl:scale-[105%] xl:-translate-x-7 translate-y-10"/>
             <div>
                 <h2 class="text-xl font-semibold pt-10 -translate-x-16 translate-y-16">Interpreting the Results</h2>
             </div>
