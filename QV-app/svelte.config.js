@@ -10,7 +10,7 @@ const config = {
 			fallback: 'index.html'
 		}),
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/alexfisher03-quantumvision' : ''
+			base: ''
 		}
 	}
 };
