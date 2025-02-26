@@ -7,7 +7,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/alexfisher03/QuantumVision">
-    <img src="QV-app/src/lib/images/doclogo.png" alt="Logo">
+    <img src="QV-app/src/lib/images/readmelogo.png" alt="Logo">
   </a>
 
 <h3 align="center">Quantum Vision</h3>
