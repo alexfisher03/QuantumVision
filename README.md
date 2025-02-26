@@ -79,6 +79,7 @@ During my time at the University of Florida, I took an introductory course in Mo
 - [x] Nuclear Fusion
     - [x] Pause Functionality
 - [ ] Quantum Tunneling Simulation
+- [ ] Mobile Optimization
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
