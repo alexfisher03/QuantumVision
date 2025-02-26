@@ -4,6 +4,7 @@
 </svelte:head>
 
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { goto } from "$app/navigation";
 	import oneD from "$lib/images/1d_modal.png";
 	import twoD from "$lib/images/2d_modal.png";

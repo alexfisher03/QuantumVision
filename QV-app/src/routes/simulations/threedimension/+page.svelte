@@ -4,6 +4,7 @@
 </svelte:head>
 
 <script lang="ts">
+    import { base } from '$app/paths';
     import arrowdown from '$lib/vectors/transitionarrow_down.svg';
     import figure3 from '$lib/images/3d_figure.png';
     import eq1 from '$lib/vectors/3d_equation1.svg';

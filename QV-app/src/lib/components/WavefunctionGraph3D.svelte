@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import * as THREE from 'three';
 	import * as SC from 'svelte-cubed';
 	import { onMount, tick } from 'svelte';

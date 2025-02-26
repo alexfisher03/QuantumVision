@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import arrow from '$lib/vectors/getstartedarrow.svg';
 	import linkedin from '$lib/vectors/linkedin.svg';
 	import avatar from '$lib/vectors/Avatar.svg';

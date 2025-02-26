@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { base } from '$app/paths';
     import { writable } from "svelte/store";
     import '@carbon/charts-svelte/styles.css';
     import { LineChart, ScaleTypes } from "@carbon/charts-svelte";
