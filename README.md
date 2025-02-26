@@ -16,7 +16,7 @@
     Quantum Vision is an advanced simulation project designed to make modern physics and quantum mechanics both accessible and engaging. By combining high-quality 2D and 3D visualizations, QuantumVision brings the fascinating, often abstract phenomena of the quantum scale into a tangible, interactive experience.
     <br />
     <br />
-    <a href="https://www.qvisionsim.com/">View Project</a>
+    <a href="https://www.qvisionsim.com/" target="_blank">View Project</a>
     &middot;
     <a href="https://github.com/alexfisher03/QuantumVision/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
   </p>
