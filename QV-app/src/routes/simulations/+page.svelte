@@ -76,8 +76,7 @@
 		<div class="top-1/3" on:click={toggleModal}>
 			<Alert border color="red">
 				<InfoCircleSolid slot="icon" class="w-5 h-5" />
-				<span class="font-bold italic">Sorry!</span>
-				This app is not optimized for mobile devices. Please use a larger device for the best experience.
+				I'm working to optimize the simulations for smaller devices. For now, please use a larger device for the best experience.
 			</Alert>
 		</div>
 		{/if}
