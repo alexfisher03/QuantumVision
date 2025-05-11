@@ -9,12 +9,22 @@
     import fusionfigure from '$lib/images/fusion_figure.png';
     import eq1 from '$lib/vectors/fusion_eq1.svg';
     import eq2 from '$lib/vectors/fusion_eq2.svg';
+    import { Badge } from "flowbite-svelte";
+    import { FlaskOutline } from "flowbite-svelte-icons";
     
 </script>
 
 <section>
     <div class="flex justify-center">
         <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Nuclear Fusion</h1>
+    </div>
+    <div class="flex justify-center">
+        <a href="/simulations/fusion/simulation" class="text-white hover:scale-110 transform transition ease-in-out duration-200 cursor-pointer">
+            <Badge border rounded color="gray">
+                <FlaskOutline class="w-4 h-4 mr-2" />
+                Try The Simulation
+            </Badge>
+        </a>
     </div>
     <div class="grid grid-cols-[1.6fr_1.2fr] gap-32 md:gap-44 xxl:gap-52 py-4">
         <!-- column 1 content -->

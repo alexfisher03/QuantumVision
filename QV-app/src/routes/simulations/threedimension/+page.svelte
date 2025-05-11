@@ -11,11 +11,21 @@
     import eq2 from '$lib/vectors/3d_equation2.svg';
     import eq3 from '$lib/vectors/3d_equation3.svg';
     import eq4 from '$lib/vectors/3d_equation4.svg';
+    import { Badge } from "flowbite-svelte";
+    import { FlaskOutline } from "flowbite-svelte-icons";
 </script>
 
 <section>
     <div class="flex justify-center">
         <h1 class="gradient-text text-transparent -translate-y-20 font-semibold animate-gradient w-fit">Particle in a 3-Dimensional Box</h1>
+    </div>
+    <div class="flex justify-center">
+        <a href="/simulations/threedimension/simulation" class="text-white hover:scale-110 transform transition ease-in-out duration-200 cursor-pointer">
+            <Badge border rounded color="gray">
+                <FlaskOutline class="w-4 h-4 mr-2" />
+                Try The Simulation
+            </Badge>
+        </a>
     </div>
     <div class="grid grid-cols-[1.6fr_1.2fr] gap-32 md:gap-44 xxl:gap-52 py-4">
         <!-- column 1 content -->

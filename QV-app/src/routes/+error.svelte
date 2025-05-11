@@ -10,7 +10,7 @@
 <section>
     <h1 class="text-xl font-bold text-white">{status}</h1>
     <p class="body-text">{error.message}</p>
-    <p class="text-sm">Sorry, something went wrong on our end. Please try again later.</p>
+    <p class="text-sm">Sorry, something went wrong on our end. Click <a href="/">here to go back</a></p>
 </section>
 
 <style>
