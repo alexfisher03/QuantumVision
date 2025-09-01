@@ -41,7 +41,7 @@
 		</a>
 
 		<div class="pt-3 sm:pt-0 sm:-translate-y-0.5 flex flex-row">
-			<a class="translate-y-1 translate-x-5 hover:translate-y-2 hover:scale-y-95 transform transition duration-200 ease-in-out" target="_blank" href="https://alexfisher03.github.io/portfolio">
+			<a class="translate-y-1 translate-x-5 hover:translate-y-2 hover:scale-y-95 transform transition duration-200 ease-in-out" target="_blank" href="https://a13r.net">
 				<img src={avatar} alt="Avatar" class="w-10 h-10"/>
 			</a>
 
